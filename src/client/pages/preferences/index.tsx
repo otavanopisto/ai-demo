@@ -1,0 +1,142 @@
+import React from "react";
+import { ModuleProvider } from "@onzag/itemize/client/providers/module";
+import { ItemProvider } from "@onzag/itemize/client/providers/item";
+import { ItemLoader } from "@onzag/itemize/client/fast-prototyping/components/item-loader";
+import Snackbar from "@onzag/itemize/client/fast-prototyping/components/snackbar";
+import { SubmitButton } from "@onzag/itemize/client/fast-prototyping/components/buttons";
+import { NeedsSubmitPrompt } from "@onzag/itemize/client/fast-prototyping/components/needs-submit-prompt";
+import UserDataRetriever from "@onzag/itemize/client/components/user/UserDataRetriever";
+import I18nRead from "@onzag/itemize/client/components/localization/I18nRead";
+import TitleSetter from "@onzag/itemize/client/components/util/TitleSetter";
+import Entry from "@onzag/itemize/client/components/property/Entry";
+import SubmitActioner from "@onzag/itemize/client/components/item/SubmitActioner";
+
+import Divider from "@mui/material/Divider";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import PersonPinIcon from "@mui/icons-material/PersonPin";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import SecurityIcon from "@mui/icons-material/Security";
+
+/**
+ * The styles for the preferences page
+ */
+const style = {
+  paper: {
+    padding: "1rem",
+  },
+  container: {
+    paddingTop: "1rem",
+  },
+  buttonBox: {
+    display: "flex",
+    justifyContent: "flex-end",
+    paddingTop: "1.2rem",
+  },
+};
+
+/**
+ * The preferences page will allow the user to modify things such as notifications, newsletters and address
+ * as well as other information that do not affect the user itself
+ * @param props the preferences props
+ * @returns a react element
+ */
+export function Preferences() {
+  return (
+    <UserDataRetriever>
+      {(userData) => {
+        const properties = [
+          "e_notifications",
+          "p_notifications",
+          "e_newsletter",
+          "address",
+        ];
+        return (
+          <ModuleProvider module="users">
+            <ItemProvider
+              itemDefinition="user"
+              properties={properties}
+              forId={userData.id}
+              includePolicies={false}
+              longTermCaching={true}
+              markForDestructionOnLogout={true}
+              cleanOnDismount={{
+                propertiesToRestoreOnAny: properties,
+              }}
+            >
+              <I18nRead id="preferences" capitalize={true}>
+                {(i18nPreferences: string) => {
+                  return (
+                    <TitleSetter>
+                      {i18nPreferences}
+                    </TitleSetter>
+                  );
+                }}
+              </I18nRead>
+              <NeedsSubmitPrompt
+                properties={properties}
+                i18nConfirm="update_your_preferences"
+                confirmationSubmitOptions={{
+                  properties,
+                  differingOnly: true,
+                }}
+              />
+              <ItemLoader>
+                <Container maxWidth="md" sx={style.container}>
+                  <Paper sx={style.paper}>
+                    <Entry id="e_notifications" rendererArgs={{icon: <NotificationsIcon />}} />
+                    <Entry id="p_notifications" rendererArgs={{icon: <PhoneIphoneIcon />}} />
+                    <Entry id="e_newsletter" rendererArgs={{icon: <MenuBookIcon />}} />
+                    <Entry id="consent" rendererArgs={{icon: <SecurityIcon />}} />
+                    
+                    <Entry id="address" rendererArgs={{ descriptionAsAlert: true, icon: <PersonPinIcon/> }} />
+
+                    <Divider />
+
+                    <Box sx={style.buttonBox}>
+                      <SubmitButton
+                        i18nId="update_your_preferences"
+                        options={{
+                          properties: ["e_notifications", "p_notifications", "e_newsletter", "consent", "address"],
+                          differingOnly: true,
+                          unpokeAfterAny: true,
+                        }}
+                        buttonColor="primary"
+                        buttonStartIcon={<DoneOutlineIcon />}
+                        buttonVariant="contained"
+                      />
+                    </Box>
+                  </Paper>
+                </Container>
+              </ItemLoader>
+              <SubmitActioner>
+                {(actioner) => (
+                  <React.Fragment>
+                    <Snackbar
+                      id="submit-preferences-error"
+                      severity="error"
+                      i18nDisplay={actioner.submitError}
+                      open={!!actioner.submitError}
+                      onClose={actioner.dismissError}
+                    />
+                    <Snackbar
+                      id="submit-preferences-success"
+                      severity="success"
+                      i18nDisplay="preferences_updated_successfully"
+                      open={actioner.submitted}
+                      onClose={actioner.dismissSubmitted}
+                    />
+                  </React.Fragment>
+                )}
+              </SubmitActioner>
+            </ItemProvider>
+          </ModuleProvider>
+        );
+      }}
+    </UserDataRetriever>
+  );
+};

@@ -1,0 +1,317 @@
+import React from "react";
+import { ModuleProvider } from "@onzag/itemize/client/providers/module";
+import { ItemProvider, ItemContextPhase, ItemContextRetrieve } from "@onzag/itemize/client/providers/item";
+import SearchLoader from "@onzag/itemize/client/components/search/SearchLoader";
+import View from "@onzag/itemize/client/components/property/View";
+import Reader from "@onzag/itemize/client/components/property/Reader";
+import AppLanguageRetriever from "@onzag/itemize/client/components/localization/AppLanguageRetriever";
+import Link from "@onzag/itemize/client/components/navigation/Link";
+import I18nRead from "@onzag/itemize/client/components/localization/I18nRead";
+
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+
+import { Avatar } from "../../components/avatar";
+import { styled, Theme } from "@mui/material/styles";
+
+/**
+ * The list of articles styles
+ * @param theme the mui theme
+ * @returns a bunch of styles
+ */
+export const style = {
+  newsTitle: {
+      marginTop: "2rem",
+      paddingLeft: "1rem",
+      borderLeft: "solid 1rem #f44336",
+  },
+  paper: {
+    borderRadius: 0,
+    border: 0,
+    boxShadow: "none",
+    backgroundColor: "transparent",
+  },
+  container: {
+    padding: 0,
+  },
+  articleSummary: {
+    padding: "1rem 0",
+  },
+  articleSummaryContainer: (theme: Theme) => ({
+    paddingBottom: "calc(40px + 2rem)",
+    [theme.breakpoints.up("md")]: {
+      paddingBottom: "calc(40px + 3rem)",
+    },
+  }),
+  publisherInfoDetailsBox: {
+    flex: "1 1 50%",
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    padding: "0 1rem",
+    flexDirection: "column",
+  },
+  moreNewsContainer: {
+    marginTop: "2rem",
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+  },
+  moreNewsButton: {
+
+  },
+};
+
+interface IStyledImageViewPhaserProps {
+  className?: string;
+}
+function StyledImageViewPhaser(props: IStyledImageViewPhaserProps) {
+  return (
+    <View
+      id="summary_image"
+      rendererArgs={{
+        imageClassName: props.className,
+        imageSizes: "300px",
+        lazyLoad: true,
+      }}
+    />
+  );
+}
+const StyledImageView = styled(StyledImageViewPhaser)({
+  transition: "transform ease-in-out 0.3s",
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+});
+
+const ArticleImageContainer = styled("div")(({ theme }) => (
+  {
+    width: "300px",
+    lineHeight: 0,
+    overflow: "hidden",
+    position: "absolute" as "absolute",
+    top: 0,
+    bottom: 0,
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+      height: "300px",
+      position: "relative" as "relative",
+    },
+  }
+));
+
+const ArticleText = styled("div")(({ theme }) => (
+  {
+    width: "50%",
+    position: "relative" as "relative",
+    flex: "1 1 50%",
+    padding: "1.5rem",
+    [theme.breakpoints.up("md")]: {
+      padding: "2rem",
+    },
+  }
+));
+
+const PublisherInfoBox = styled("div")(({ theme }) => (
+  {
+    display: "flex",
+    position: "absolute" as "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    bottom: "1.5rem",
+    left: "1.5rem",
+    [theme.breakpoints.up("md")]: {
+      bottom: "2rem",
+      left: "2rem",
+    },
+  }
+));
+
+
+// due to a bug in material UI I not supporting forwading of the as property
+// we are forced to do this using a hack
+interface IFalseStyledLink {
+  className?: string;
+  searchRecordId: string;
+  children: React.ReactNode;
+}
+
+function FalseStyledLink(props: IFalseStyledLink) {
+  return (<Link className={props.className} to={`/news/${props.searchRecordId}`} as="div">{props.children}</Link>)
+}
+
+const StyledLink = styled(FalseStyledLink)(({ theme }) => (
+  {
+    "backgroundColor": "white",
+    "marginTop": "2rem",
+    "boxShadow": "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+    "transition": "box-shadow ease-in-out 0.3s",
+    "borderTop": "solid 1px rgba(0,0,0,0.12)",
+    "cursor": "pointer",
+    "display": "flex",
+    "alignItems": "flex-start",
+    "justifyContent": "center",
+    "position": "relative" as "relative",
+    "width": "100%",
+    "flexWrap": "wrap",
+    "&:nth-child(even)": {
+      flexDirection: "row-reverse",
+    },
+    [theme.breakpoints.up("sm")]: {
+      [`&:nth-child(odd) ${PublisherInfoBox}`]: {
+        left: "calc(300px + 1.5rem)",
+      },
+      [`&:nth-child(even) ${ArticleText}`]: {
+        paddingRight: "calc(1.5rem + 300px)",
+      },
+      [`&:nth-child(odd) ${ArticleText}`]: {
+        paddingLeft: "calc(1.5rem + 300px)",
+      },
+      [`&:nth-child(even) ${ArticleImageContainer}`]: {
+        right: 0,
+      },
+      [`&:nth-child(odd) ${ArticleImageContainer}`]: {
+        left: 0,
+      },
+    },
+    [theme.breakpoints.up("md")]: {
+      [`&:nth-child(odd) ${PublisherInfoBox}`]: {
+        left: "calc(300px + 2rem)",
+      },
+      [`&:nth-child(even) ${ArticleText}`]: {
+        paddingRight: "calc(2rem + 300px)",
+      },
+      [`&:nth-child(odd) ${ArticleText}`]: {
+        paddingLeft: "calc(2rem + 300px)",
+      },
+    },
+    "&:hover, &:active": {
+      boxShadow: "0px 6px 6px -1px rgba(0,0,0,0.2), 0px 6px 6px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+    },
+    [`&:hover ${StyledImageView}, &:active ${StyledImageView}`]: {
+      transform: "scale(1.05)",
+    },
+  }
+));
+
+/**
+ * Provides a list of articles for fast prototyping that the user can interact with, this is meant
+ * to be placed within the frontpage
+ * @param props the article list props
+ * @returns a react element
+ */
+export function Articles() {
+  return (
+    <Container maxWidth="md" sx={style.container}>
+      <Paper sx={style.paper}>
+        <ModuleProvider module="cms">
+          <AppLanguageRetriever>
+            {(languageData) => (
+              <ItemProvider
+                itemDefinition="article"
+                searchCounterpart={true}
+                setters={[
+                  {
+                    id: "locale",
+                    searchVariant: "search",
+                    value: languageData.currentLanguage.code,
+                  },
+                ]}
+                automaticSearch={{
+                  requestedProperties: [
+                    "title",
+                    "locale",
+                    "summary",
+                    "summary_image",
+                  ],
+                  searchByProperties: [
+                    "locale",
+                  ],
+                  traditional: true,
+                  limit: 5,
+                  offset: 0,
+                }}
+              >
+                <Typography variant="h2" sx={style.newsTitle}>
+                  <I18nRead id="news" capitalize={true} />
+                </Typography>
+                <SearchLoader
+                  pageSize={5}
+                  currentPage={0}
+                  static="TOTAL"
+                >
+                  {(loader) => {
+                    return loader.searchRecords.map((searchRecord) => {
+                      return (
+                        <ItemProvider {...searchRecord.providerProps}>
+                          <StyledLink searchRecordId={searchRecord.id}>
+                            <ArticleImageContainer>
+                              <StyledImageView />
+                            </ArticleImageContainer>
+                            <ArticleText>
+                              <Typography variant="h4"><View id="title" /></Typography>
+                              <Box sx={style.articleSummaryContainer}>
+                                <Box sx={style.articleSummary}>
+                                  <View id="summary" />
+                                </Box>
+                              </Box>
+                            </ArticleText>
+                            <Reader id="created_by">
+                              {(createdBy: string) => (
+                                <ModuleProvider module="users">
+                                  <ItemProvider
+                                    itemDefinition="user"
+                                    forId={createdBy}
+                                    static="TOTAL"
+                                    properties={[
+                                      "username",
+                                      "profile_picture",
+                                      "role",
+                                    ]}
+                                  >
+                                    <ItemContextPhase>
+                                      <PublisherInfoBox>
+                                        <Avatar
+                                          hideFlag={true}
+                                          size="small"
+                                        />
+                                        <Box sx={style.publisherInfoDetailsBox}>
+                                          <Typography variant="body1"><View id="username" /></Typography>
+                                          <Typography variant="body2">
+                                            <ItemContextRetrieve>
+                                              <View id="created_at" rendererArgs={{ dateFormat: "LLL" }} />
+                                            </ItemContextRetrieve>
+                                          </Typography>
+                                        </Box>
+                                      </PublisherInfoBox>
+                                    </ItemContextPhase>
+                                  </ItemProvider>
+                                </ModuleProvider>
+                              )}
+                            </Reader>
+                          </StyledLink>
+                        </ItemProvider>
+                      );
+                    });
+                  }}
+                </SearchLoader>
+                <Box sx={style.moreNewsContainer}>
+                  <Link to="/news">
+                    <Button size="large" sx={style.moreNewsButton} variant="contained" color="primary">
+                      <I18nRead id="more_news" capitalize={true} />
+                    </Button>
+                  </Link>
+                </Box>
+              </ItemProvider>
+            )}
+          </AppLanguageRetriever>
+        </ModuleProvider>
+      </Paper>
+    </Container>
+  );
+};

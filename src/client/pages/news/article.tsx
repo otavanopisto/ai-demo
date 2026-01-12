@@ -1,0 +1,265 @@
+import React from "react";
+
+import Reader from "@onzag/itemize/client/components/property/Reader";
+import TitleSetter from "@onzag/itemize/client/components/util/TitleSetter";
+import { ModuleProvider } from "@onzag/itemize/client/providers/module";
+import { ItemProvider, NoStateItemProvider } from "@onzag/itemize/client/providers/item";
+import { ItemLoader } from "@onzag/itemize/client/fast-prototyping/components/item-loader";
+import View from "@onzag/itemize/client/components/property/View";
+import I18nRead from "@onzag/itemize/client/components/localization/I18nRead";
+
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+
+import { Avatar } from "../../components/avatar";
+import { Theme, styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+
+/**
+ * The article page props
+ */
+interface IArticleProps {
+  match: {
+    params: {
+      id: string;
+    };
+  };
+}
+
+/**
+ * the article content styles
+ * @param theme the mui theme
+ * @returns a bunch of styles
+ */
+const style = {
+  container: {
+    padding: 0,
+  },
+  paper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  headerImageContainer: {
+    width: "100%",
+    height: "40vh",
+    lineHeight: 0,
+    overflow: "hidden",
+    position: "relative" as "relative",
+    boxShadow: "0 0 5px rgb(50,50,50)",
+    fallbacks: {
+      height: "30rem",
+    },
+  },
+  headerImage: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+  },
+  headerOverlay: {
+    backgroundImage: "linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.7), rgba(0, 0, 0, 0.95))",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    zIndex: 2,
+  },
+  innerContainer: (theme: Theme) => ({
+    padding: "2rem 4rem 4rem 4rem",
+    [theme.breakpoints.down('md')]: {
+      padding: "2rem 3rem 3rem 3rem",
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: "2rem",
+    },
+  }),
+  title: {
+    textTransform: "uppercase",
+    fontWeight: 900,
+    position: "absolute",
+    bottom: "3rem",
+    zIndex: 3,
+    color: "white",
+    textShadow: "0 0 5px black",
+    borderLeft: "solid 1rem white",
+    paddingLeft: "2rem",
+  },
+  publisher: {
+    textTransform: "uppercase",
+    fontWeight: 900,
+    position: "absolute",
+    bottom: "2rem",
+    zIndex: 3,
+    fontSize: "0.75rem",
+    color: "white",
+    textShadow: "0 0 5px black",
+    paddingLeft: "3rem",
+  },
+  publisherAvatar: {
+    position: "absolute",
+    top: "2rem",
+    left: "3rem",
+  },
+  dateInfo: (theme: Theme) => ({
+    display: "flex",
+    width: "100%",
+    color: theme.palette.grey[400],
+    paddingBottom: "1.2rem",
+  }),
+  divider: {
+    margin: "0 0.7rem",
+  },
+};
+
+const profileURLFn = (id: string) => `/u/${id}`;
+
+interface ISummaryImageView {
+  className?: string;
+}
+function SummaryImageView(props: ISummaryImageView) {
+  return (
+    <View
+      id="summary_image"
+      rendererArgs={{
+        imageClassName: props.className,
+        imageSizes: "70vw",
+      }}
+    />
+  );
+}
+
+// at the moment this code was written buggy typescript definitions rejected this value
+// even when it's correct
+const StyledSummaryImageView = styled(SummaryImageView)(style.headerImage as any);
+
+/**
+ * The article content displays the content for a given article inside
+ * its own containement
+ * @param props the article content props
+ * @returns a react element
+ */
+function ArticleContent() {
+  return (
+    <Container maxWidth="md" sx={style.container}>
+      <Paper sx={style.paper}>
+        <ItemLoader fullWidth={true}>
+          <Box sx={style.headerImageContainer}>
+            <StyledSummaryImageView />
+            <Box sx={style.headerOverlay} />
+            <Typography variant="h3" sx={style.title}>
+              <Reader id="title">{(title: string) => title}</Reader>
+            </Typography>
+            <Reader id="created_by">
+              {(createdBy: string) => (
+                <ModuleProvider module="users">
+                  <ItemProvider
+                    itemDefinition="user"
+                    forId={createdBy}
+                    static="TOTAL"
+                    properties={[
+                      "username",
+                      "profile_picture",
+                      "role",
+                    ]}
+                  >
+                    <Reader id="username">
+                      {(username: string) => (
+                        <ModuleProvider module="cms">
+                          <NoStateItemProvider
+                            itemDefinition="article"
+                          >
+                            <Typography variant="h3" sx={style.publisher}>
+                              <I18nRead id="by" args={[username]} />
+                            </Typography>
+                          </NoStateItemProvider>
+                        </ModuleProvider>
+                      )}
+                    </Reader>
+                    <Avatar
+                      linkSx={style.publisherAvatar}
+                      hideFlag={true}
+                      size="medium"
+                      profileURL={profileURLFn}
+                    />
+                  </ItemProvider>
+                </ModuleProvider>
+              )}</Reader>
+          </Box>
+          <Box sx={style.innerContainer} className="trusted">
+            <Box sx={style.dateInfo}>
+              <Typography variant="body2">
+                <View id="created_at" rendererArgs={{ dateFormat: "LLLL" }} />
+              </Typography>
+              <Reader id="edited_at">
+                {(editedAt: string) => {
+                  if (editedAt) {
+                    return (
+                      <>
+                        <Divider orientation="vertical" flexItem={true} sx={style.divider} />
+                        <I18nRead
+                          id="updated_at"
+                          capitalize={true}
+                          args={
+                            [
+                              <Typography variant="body2">
+                                <View id="edited_at" rendererArgs={{ dateFormat: "ll" }} />
+                              </Typography>,
+                            ]
+                          }
+                        />
+                      </>
+                    );
+                  }
+                  return null;
+                }}
+              </Reader>
+            </Box>
+            <View id="content" />
+          </Box>
+        </ItemLoader>
+      </Paper>
+    </Container>
+  );
+};
+
+/**
+ * the article component itself that will provide for a given
+ * article
+ * @param props the props for the article
+ * @returns a react element
+ */
+export function Article(props: IArticleProps) {
+  const articleId = props.match.params.id;
+  return (
+    <>
+      <ModuleProvider module="cms">
+        <ItemProvider
+          itemDefinition="article"
+          forId={articleId}
+          static="TOTAL"
+          properties={
+            [
+              "title",
+              "locale",
+              "content",
+              "summary_image",
+              "attachments",
+            ]
+          }
+        >
+          <Reader id="title">
+            {(title: string) => (
+              <TitleSetter>
+                {title}
+              </TitleSetter>
+            )}
+          </Reader>
+          <ArticleContent />
+        </ItemProvider>
+      </ModuleProvider>
+    </>
+  );
+}

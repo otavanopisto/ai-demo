@@ -1,0 +1,214 @@
+import React from "react";
+
+import { DialogResponsive } from "@onzag/itemize/client/fast-prototyping/components/dialog";
+import { ItemProvider } from "@onzag/itemize/client/providers/item";
+import UserActioner from "@onzag/itemize/client/components/user/UserActioner";
+import I18nRead from "@onzag/itemize/client/components/localization/I18nRead";
+import Entry from "@onzag/itemize/client/components/property/Entry";
+
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import Alert from '@mui/material/Alert';
+import AlernateEmailIcon from "@mui/icons-material/AlternateEmail";
+import MailIcon from "@mui/icons-material/Mail";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import Snackbar from "@onzag/itemize/client/fast-prototyping/components/snackbar";
+import { ProgressingElement } from "@onzag/itemize/client/fast-prototyping/components/util";
+import Reader from "@onzag/itemize/client/components/property/Reader";
+import { localizedRedirectTo } from "@onzag/itemize/client/components/navigation";
+import { styled } from "@mui/material/styles";
+
+/**
+ * The recover dialog styles
+ */
+const style = {
+  resetPasswordButtonWrapper: {
+    marginTop: "1.5rem",
+  },
+  divider: {
+    margin: "1rem 0",
+  },
+};
+
+/**
+ * Props for the recover dialog
+ */
+interface IRecoverDialogProps {
+  /**
+   * Whether the dialog is currently open
+   */
+  open: boolean;
+  /**
+   * Triggere when the dialog closes
+   */
+  onClose: () => void;
+  /**
+   * Triggered if the user wants to login rather than recover password
+   */
+  onLoginRequest: () => void;
+}
+
+/**
+ * runs many functions at once
+ * @param functions the functions to run
+ */
+function runManyFunctions(functions: Array<() => void>) {
+  functions.forEach((f) => f());
+}
+
+const StyledProgressingElement = styled(ProgressingElement)(style.resetPasswordButtonWrapper);
+
+/**
+ * A recover dialog fully compatible with the navbar that allows for quickly adding
+ * a dialog for recovering the password, it contains its own item definition provider but depends to
+ * be in the right module context
+ *
+ * @param props the props for recovery
+ * @returns a react component
+ */
+export function RecoverDialog(props: IRecoverDialogProps) {
+  return (
+    <ItemProvider
+      itemDefinition="user"
+      properties={["email", "phone"]}
+    >
+      <Reader id="phone">
+        {(phone: string) => (
+          <UserActioner>
+            {(actioner) => {
+              const sendResetPasswordSMS = async () => {
+                const rs = await actioner.sendResetPasswordSMS();
+                if (!rs.error) {
+                  localizedRedirectTo("/reset-password?userandomid=true&randomidtype=phone&randomidvalue=" + encodeURIComponent(phone))
+                }
+              }
+
+              return (
+                <I18nRead id="recover_account" capitalize={true}>
+                  {(i18nRecover: string) => (
+                    <DialogResponsive
+                      open={props.open}
+                      onClose={
+                        runManyFunctions.bind(
+                          null,
+                          [actioner.dismissStatefulError, actioner.cleanUnsafeFields, props.onClose],
+                        )
+                      }
+                      title={i18nRecover}
+                    >
+                      <Reader id="phone">
+                        {(phone: string) => (
+                          <Alert severity="info">
+                            <I18nRead id={phone ? "recover_account_message_phone" : "recover_account_message"} />
+                          </Alert>
+                        )}
+                      </Reader>
+                      <form>
+                        <Reader id="phone">
+                          {(phone: string) => (
+                            <Entry
+                              id="email"
+                              onEntryDrivenChange={actioner.dismissStatefulError}
+                              showAsInvalid={!phone && !!actioner.statefulError}
+                              hideDescription={true}
+                              rendererArgs={{
+                                icon: <AlernateEmailIcon />,
+                              }}
+                              autoFocus={true}
+                              disabled={!!phone}
+                            />
+                          )}
+                        </Reader>
+                        <Reader id="email">
+                          {(email: string) => (
+                            <Entry
+                              id="phone"
+                              onEntryDrivenChange={actioner.dismissStatefulError}
+                              showAsInvalid={!email && !!actioner.statefulError}
+                              hideDescription={true}
+                              rendererArgs={{
+                                icon: <PhoneIphoneIcon />,
+                              }}
+                              disabled={!!email}
+                            />
+                          )}
+                        </Reader>
+                      </form>
+                      <Reader id="phone">
+                        {(phone: string) => (
+                          <I18nRead id={phone ? "recover_account_action_phone" : "recover_account_action"}>
+                            {(i18nRecoverAction: string) => (
+                              <StyledProgressingElement
+                                isProgressing={actioner.statefulOnProgress}
+                                fullWidth={true}
+                              >
+                                <Reader id="phone">
+                                  {(phone: string) => (
+                                    <Button
+                                      color="primary"
+                                      variant="contained"
+                                      size="large"
+                                      aria-label={i18nRecoverAction}
+                                      startIcon={<MailIcon />}
+                                      onClick={phone ? sendResetPasswordSMS : actioner.sendResetPasswordEmail}
+                                      fullWidth={true}
+                                    >
+                                      {i18nRecoverAction}
+                                    </Button>
+                                  )}
+                                </Reader>
+                              </StyledProgressingElement>
+                            )}
+                          </I18nRead>
+                        )}
+                      </Reader>
+                      <Divider sx={style.divider} />
+                      <I18nRead id="login">
+                        {(i18nLogin: string) => (
+                          <Button
+                            color="secondary"
+                            variant="text"
+                            fullWidth={true}
+                            aria-label={i18nLogin}
+                            onClick={props.onLoginRequest}
+                          >
+                            {i18nLogin}
+                          </Button>
+                        )}
+                      </I18nRead>
+                      <Snackbar
+                        id="recover-dialog-error"
+                        severity="error"
+                        i18nDisplay={actioner.statefulError}
+                        open={!!actioner.statefulError}
+                        onClose={actioner.dismissStatefulError}
+                      />
+                      <Reader id="phone">
+                        {(phone: string) => (
+                          <Snackbar
+                            id="recover-dialog-success"
+                            severity="success"
+                            i18nDisplay={
+                              phone ?
+                                "recover_account_action_success_phone" :
+                                "recover_account_action_success"
+                            }
+                            open={!!actioner.statefulSuccess}
+                            onClose={actioner.dismissStatefulSuccess}
+                          />
+                        )}
+                      </Reader>
+                    </DialogResponsive>
+                  )}
+                </I18nRead>
+              )
+            }}
+          </UserActioner>
+        )}
+      </Reader>
+    </ItemProvider>
+  );
+};

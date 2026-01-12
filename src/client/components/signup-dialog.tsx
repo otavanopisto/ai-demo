@@ -1,0 +1,219 @@
+import React from "react";
+
+import { ItemProvider } from "@onzag/itemize/client/providers/item";
+import Link from "@onzag/itemize/client/components/navigation/Link";
+import { LogActioner } from "@onzag/itemize/client/components/login/LogActioner";
+import I18nRead from "@onzag/itemize/client/components/localization/I18nRead";
+import Entry from "@onzag/itemize/client/components/property/Entry";
+import AppLanguageRetriever from "@onzag/itemize/client/components/localization/AppLanguageRetriever";
+import Setter from "@onzag/itemize/client/components/property/Setter";
+import AppCountryRetriever from "@onzag/itemize/client/components/localization/AppCountryRetriever";
+import AppCurrencyRetriever from "@onzag/itemize/client/components/localization/AppCurrencyRetriever";
+import I18nReadError from "@onzag/itemize/client/components/localization/I18nReadError";
+import I18nReadMany from "@onzag/itemize/client/components/localization/I18nReadMany";
+
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import DoneIcon from "@mui/icons-material/Done";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { ProgressingElement } from "@onzag/itemize/client/fast-prototyping/components/util";
+import Snackbar from "@onzag/itemize/client/fast-prototyping/components/snackbar";
+import { DialogResponsive } from "@onzag/itemize/client/fast-prototyping/components/dialog";
+import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
+
+/**
+ * The signup dialog styles
+ */
+const style = {
+  welcomeTitle: {
+    paddingBottom: "1rem",
+    fontWeight: 300,
+  },
+  signupComplyCaption: {
+    fontWeight: 300,
+    width: "100%",
+    textAlign: "center",
+    paddingTop: "1rem",
+    display: "inline-block",
+  },
+  signupButtonWrapper: {
+    marginTop: "1.5rem",
+  },
+  titleContainer: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+  },
+  forgotPasswordButton: {
+    marginTop: "1rem",
+  },
+  divider: {
+    margin: "1rem 0",
+  },
+};
+
+/**
+ * The props for the signup dialog that it needs to take
+ */
+interface ISignupDialogProps {
+  /**
+   * Whether the dialog is currently open
+   */
+  open: boolean;
+  /**
+   * Triggers when the dialog is closed
+   */
+  onClose: () => void;
+  /**
+   * when the user requests to login rather than signup
+   */
+  onLoginRequest: () => void;
+}
+
+/**
+ * run many functions at once
+ * @param functions the functions to run
+ */
+function runManyFunctions(functions: Array<() => void>) {
+  functions.forEach((f) => f());
+}
+
+const StyledProgressingElement = styled(ProgressingElement)(style.signupButtonWrapper);
+
+/**
+ * A fully compatible with the navbar fast prototyping signup dialog for the user
+ * to fill in, contains its own item definition provider, but it must be into
+ * a module provider context
+ * @param props the login props
+ * @returns a react component
+ */
+export function SignupDialog(props: ISignupDialogProps) {
+  return (
+    <ItemProvider
+      itemDefinition="user"
+      enableExternalChecks={true}
+      properties={[
+        "username",
+        "password",
+        "app_language",
+        "app_country",
+        "app_currency",
+      ]}
+    >
+      <LogActioner>
+        {(actioner) => (
+          <I18nRead id="signup" capitalize={true}>
+            {(i18nSignup: string) => (
+              <DialogResponsive
+                open={props.open}
+                onClose={
+                  runManyFunctions.bind(
+                    null,
+                    [actioner.dismissError, actioner.cleanUnsafeFields, props.onClose],
+                    )
+                  }
+                title={i18nSignup}
+              >
+                <Box sx={style.titleContainer}>
+                  <Typography variant="h4" sx={style.welcomeTitle}>
+                    <I18nRead id="signup_welcome" capitalize={true}/>
+                  </Typography>
+                </Box>
+                <form>
+                  <Entry
+                    id="username"
+                    onEntryDrivenChange={actioner.dismissError}
+                    showAsInvalid={!!actioner.error}
+                    rendererArgs={{
+                      icon: <AccountCircleIcon/>,
+                    }}
+                    autoFocus={true}
+                  />
+                  <Entry id="password" onEntryDrivenChange={actioner.dismissError} showAsInvalid={!!actioner.error} />
+                  <AppLanguageRetriever>
+                    {(languageData) => (
+                      <Setter id="app_language" value={languageData.currentLanguage.code}/>
+                    )}
+                  </AppLanguageRetriever>
+                  <AppCountryRetriever>
+                    {(countryData) => (
+                      <Setter id="app_country" value={countryData.currentCountry.code}/>
+                    )}
+                  </AppCountryRetriever>
+                  <AppCurrencyRetriever>
+                    {(currencyData) => (
+                      <Setter id="app_currency" value={currencyData.currentCurrency.code}/>
+                    )}
+                  </AppCurrencyRetriever>
+
+                  <I18nReadError error={actioner.error} />
+                </form>
+                <StyledProgressingElement
+                  isProgressing={actioner.isLoggingIn}
+                  fullWidth={true}
+                >
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    size="large"
+                    aria-label={i18nSignup}
+                    startIcon={<DoneIcon />}
+                    onClick={actioner.signup.bind(null, true, null)}
+                    fullWidth={true}
+                  >
+                    {i18nSignup}
+                  </Button>
+                </StyledProgressingElement>
+                <I18nReadMany
+                  data={[{
+                    id: "terms_and_conditions",
+                  }, {
+                    id: "privacy_policy",
+                  }]}
+                >
+                  {(i18nTermsAndConditions: string, i18nPrivacyPolicy: string) => (
+                    <Typography variant="caption" sx={style.signupComplyCaption}>
+                      <I18nRead
+                        id="signup_accept_terms"
+                        capitalize={true}
+                        args={[
+                          <Link to="/terms-and-conditions">{i18nTermsAndConditions}</Link>,
+                          <Link to="/privacy-policy">{i18nPrivacyPolicy}</Link>,
+                        ]}
+                      />
+                    </Typography>
+                  )}
+                </I18nReadMany>
+                <Divider sx={style.divider}/>
+                <I18nRead id="login_instead">
+                  {(i18nLoginInstead: string) => (
+                    <Button
+                      color="secondary"
+                      variant="text"
+                      fullWidth={true}
+                      aria-label={i18nLoginInstead}
+                      onClick={props.onLoginRequest}
+                    >
+                      {i18nLoginInstead}
+                    </Button>
+                  )}
+                </I18nRead>
+                <Snackbar
+                  id="signup-dialog-error"
+                  severity="error"
+                  i18nDisplay={actioner.error}
+                  open={!!actioner.error}
+                  onClose={actioner.dismissError}
+                />
+              </DialogResponsive>
+            )}
+          </I18nRead>
+        )}
+      </LogActioner>
+    </ItemProvider>
+  );
+};

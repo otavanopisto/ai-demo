@@ -1,0 +1,166 @@
+import { initializeServer } from "@onzag/itemize/server";
+import { localeReplacer } from "@onzag/itemize/util";
+import {
+  genericAnalyticsDataValidator,
+  getGenericAnalyticsDataExtender,
+  getItemAnalyticsDataExtender,
+  itemAnalyticsDataValidator,
+} from "@onzag/itemize/client/components/analytics/util";
+
+// Check the client for info on these, we are replicating what is used in the client somewhat
+import React from "react";
+import App from "../client/app";
+import { rendererContext } from "@onzag/itemize/client/fast-prototyping/renderers";
+import { appWrapper, mainWrapper } from "@onzag/itemize/client/fast-prototyping/wrappers";
+import { styleCollector } from "@onzag/itemize/client/fast-prototyping/collectors";
+
+// Itemize server isn't hot, it won't refresh in realtime and it
+// isn't recommended to attempt to set it up that way
+
+// for a given build number all the resources are considered equal,
+// resources are contained within the /rest/resources/ endpoint during
+// development of the app remember to disable service workers by making it
+// bypass for network or otherwise the content you will get will always be the
+// same, this bypasses the build number functionality on the client side
+// but only after reload
+
+// some changes require a server reload as well, such as enforcing a new build number
+// adding new languages, changing API keys, etc... and of course, changing server code
+
+// itemize is heavily offline so it always attempts not to call the server, itemize
+// apps are also aware of when they are not connected to the server and it doesn't make
+// them crash (except in development mode with service workers off)
+
+// when a new version of an itemize app is deployed the client can realize that
+// due to a new build number that doesn't match its internal build number, which will
+// trigger the refresh of all the resources and wipes the client side caches a refresh
+// is requested, if the app is just being launched when that is detected, it will refresh
+// immediately and load the new version, otherwise if it happens while the user uses the app
+// it will mark the app as outdated and you can have custom logic for outdated apps
+// outdated apps only exists for that session
+
+initializeServer(
+  {
+    // These are the same as of the client side
+    rendererContext,
+    mainComponent: React.createElement(App, null),
+    mainWrapper,
+    appWrapper,
+    // the style collector which collects style for material UI SSR
+    collector: styleCollector,
+    seoRules: {
+      "/": {
+        crawable: true,
+      },
+      "profile/:id": {
+        crawable: true,
+        collect: {
+          itemOrModule: "users/user",
+        },
+      },
+    },
+    analytics: {
+      // feel free to add many other metrics
+      // these metrics are the default that are used
+      // accross the application in <ItemProvider timeTrackAt="item" timeTrackDataFn={genericAnalyticsDataRetriever} />
+      // will work out of the box, and the <LocationTracker at="page" atOffline="page_offline" trackDataFn={genericAnalyticsDataRetriever} />
+      // and when performing a signin the trackAt: "conversions" option will allow to track this
+      // as well as the <BasicUserTracker at="basic" trackDataFn={genericAnalyticsDataRetriever}/>
+      // note that user must have given their consent which is checked
+      // at consent property value of the user for non-anonymous tracks
+      trackers: {
+        // default analytics trackers
+        // tracks user pages and how much time users spend at a given page
+        // online only trusted timer
+        page: {
+          timed: true,
+          trusted: true,
+          clientMustSpecifyContext: true,
+          clientTrustedTrackingLimit: 2,
+          contextValidator: (context) => {
+            try {
+              new URL("https://test.com" + context);
+              return true;
+            } catch {
+              return false;
+            }
+          },
+          exposed: true,
+          dataValidator: genericAnalyticsDataValidator,
+          dataEditor: getGenericAnalyticsDataExtender(["username", "app_language", "app_country"]),
+          clientWillUpsert: false,
+          allowAnonymous: false,
+        },
+        // tracks user pages and how much time users spend at a given page
+        // including offline times
+        page_offline: {
+          timed: true,
+          trusted: false,
+          allowAnonymous: false,
+          clientMustSpecifyContext: true,
+          contextValidator: (context) => {
+            try {
+              new URL("https://test.com" + context);
+              return true;
+            } catch {
+              return false;
+            }
+          },
+          exposed: true,
+          dataValidator: genericAnalyticsDataValidator,
+          dataEditor: getGenericAnalyticsDataExtender(["username", "app_language", "app_country"]),
+          clientWillUpsert: false,
+        },
+        // tracks user engagement with a given item
+        item: {
+          timed: true,
+          trusted: false,
+          allowAnonymous: false,
+          dataValidator: itemAnalyticsDataValidator,
+          dataEditor: getItemAnalyticsDataExtender(
+            ["username", "app_language", "app_country"],
+            (row, data) => {
+              // set up all the data you want for custom interactions
+              // for the given type
+              if (row.type === "MOD_users__IDEF_user") {
+                // these are arbitrary, the data is arbitrary, analytics to your hearts content
+                data.interaction_type = "user_to_user";
+                data.target_user = row.id;
+                data.target_username = row.username;
+              } else {
+                data.interaction_type = "unknown";
+              }
+              return data;
+            }
+          ),  
+          clientMustSpecifyContext: true,
+          contextValidator(context, userData, appData) {
+            const contextSplitted = context.split(".")[0];
+            return !!appData.root.registry[contextSplitted] && contextSplitted.startsWith("MOD_");
+          },
+          exposed: true,
+          clientWillUpsert: false,
+        },
+        // tracks user's opening the app
+        basic: {
+          timed: false,
+          trusted: true,
+          allowAnonymous: true,
+          clientWillUpsert: false,
+          clientMustSpecifyContext: true,
+          contextValidator: (context) => {
+            try {
+              new URL("https://test.com" + context);
+              return true;
+            } catch {
+              return false;
+            }
+          },
+          dataValidator: genericAnalyticsDataValidator,
+          dataEditor: getGenericAnalyticsDataExtender(["username", "app_language", "app_country"]),
+          exposed: true,
+        },
+      }
+    }
+  }
+);
