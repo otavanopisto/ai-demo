@@ -1,0 +1,53 @@
+import React from "react";
+
+import I18nReadMany from "@onzag/itemize/client/components/localization/I18nReadMany";
+
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+
+/**
+ * The information styles
+ */
+const style = {
+  paper: {
+    padding: "1rem",
+  },
+  container: {
+    paddingTop: "1rem",
+  },
+  infoText: {
+    padding: "1rem 1rem 0 1rem",
+  },
+};
+
+/**
+ * The information component
+ * @param props the information props
+ * @returns a react element
+ */
+export function Info() {
+  return (
+    <Container maxWidth="md" sx={style.container}>
+      <Paper sx={style.paper}>
+        <I18nReadMany
+          data={[
+            { id: "info_content" },
+            { id: "info_content_2" },
+          ]}
+        >
+          {(i18nInfoContent1: string, i18nInfoContent2: string) => (
+            <>
+              <Typography variant="body1" sx={style.infoText}>
+                {i18nInfoContent1}
+              </Typography>
+              <Typography variant="body1" sx={style.infoText}>
+                {i18nInfoContent2}
+              </Typography>
+            </>
+          )}
+        </I18nReadMany>
+      </Paper>
+    </Container>
+  );
+};

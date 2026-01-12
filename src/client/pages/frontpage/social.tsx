@@ -1,0 +1,181 @@
+import React from "react";
+import I18nRead from "@onzag/itemize/client/components/localization/I18nRead";
+
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import PinterestIcon from "@mui/icons-material/Pinterest";
+import RedditIcon from "@mui/icons-material/Reddit";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import { VKIcon, WeChatIcon } from "@onzag/itemize/client/fast-prototyping/icons/social-icons";
+import { styled } from "@mui/material/styles";
+
+/**
+ * provides the styles for the social section
+ * @returns a bunch of styles
+ */
+export const style = {
+  socialTitle: {
+    marginTop: "4rem",
+    paddingLeft: "1rem",
+    borderLeft: "solid 1rem #f44336",
+    fontWeight: 300,
+  },
+  container: {
+    padding: 0,
+  },
+  paper: {
+    borderRadius: 0,
+    border: 0,
+    boxShadow: "none",
+    backgroundColor: "transparent",
+  },
+  paper2: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: "2rem",
+    padding: "1rem",
+    flexWrap: "wrap",
+  },
+  button: {
+    width: "8rem",
+    height: "8rem",
+    padding: "2rem",
+  },
+  icon: {
+    fontSize: "4rem",
+  },
+  facebook: {
+    color: "#3b5998",
+  },
+  youtube: {
+    color: "#FF0000",
+  },
+  instagram: {
+    color: "#C13584",
+  },
+  twitter: {
+    color: "#1DA1F2",
+  },
+  reddit: {
+    color: "#FF4500",
+  },
+  linkedin: {
+    color: "#2867B2",
+  },
+  pinterest: {
+    color: "#BD081C",
+  },
+};
+
+const StyledVKIcon = styled(VKIcon)(style.icon);
+const StyledWeChatIcon = styled(WeChatIcon)(style.icon);
+
+/**
+ * The social section provides the buttons and urls for the different social networks that can be
+ * used as defined by the developer, these networks are language sensitive and are read
+ * from the i18n properties data
+ *
+ * @param props the social props
+ * @returns a react element
+ */
+export function Social() {
+  return (
+    <Container maxWidth="md" sx={style.container}>
+      <Paper sx={style.paper}>
+        <Typography variant="h3" sx={style.socialTitle}>
+          <I18nRead id="social" capitalize={true}/>
+        </Typography>
+        <Paper sx={style.paper2}>
+          <I18nRead id="facebook_url">
+            {(fbURL: string) => (
+              fbURL ? <a href={fbURL} target="_blank">
+                <IconButton sx={style.button} size="large">
+                  <FacebookIcon sx={[style.icon, style.facebook]} />
+                </IconButton>
+              </a> : null
+            )}
+          </I18nRead>
+          <I18nRead id="instagram_url">
+            {(instagramURL: string) => (
+              instagramURL ? <a href={instagramURL} target="_blank">
+                <IconButton sx={style.button} size="large">
+                  <InstagramIcon sx={[style.icon, style.instagram]} />
+                </IconButton>
+              </a> : null
+            )}
+          </I18nRead>
+          <I18nRead id="linkedin_url">
+            {(linkedInURL: string) => (
+              linkedInURL ? <a href={linkedInURL} target="_blank">
+                <IconButton sx={style.button} size="large">
+                  <LinkedInIcon sx={[style.icon, style.linkedin]} />
+                </IconButton>
+              </a> : null
+            )}
+          </I18nRead>
+          <I18nRead id="pinterest_url">
+            {(pinterestURL: string) => (
+              pinterestURL ? <a href={pinterestURL} target="_blank">
+                <IconButton sx={style.button} size="large">
+                  <PinterestIcon sx={[style.icon, style.pinterest]} />
+                </IconButton>
+              </a> : null
+            )}
+          </I18nRead>
+          <I18nRead id="reddit_url">
+            {(redditURL: string) => (
+              redditURL ? <a href={redditURL} target="_blank">
+                <IconButton sx={style.button} size="large">
+                  <RedditIcon sx={[style.icon, style.reddit]} />
+                </IconButton>
+              </a> : null
+            )}
+          </I18nRead>
+          <I18nRead id="twitter_url">
+            {(twitterURL: string) => (
+              twitterURL ? <a href={twitterURL} target="_blank">
+                <IconButton sx={style.button} size="large">
+                  <TwitterIcon sx={[style.icon, style.twitter]} />
+                </IconButton>
+              </a> : null
+            )}
+          </I18nRead>
+          <I18nRead id="vk_url">
+            {(vkURL: string) => (
+              vkURL ? <a href={vkURL} target="_blank">
+                <IconButton sx={style.button} size="large">
+                  <StyledVKIcon />
+                </IconButton>
+              </a> : null
+            )}
+          </I18nRead>
+          <I18nRead id="wechat_url">
+            {(wechatURL: string) => (
+              wechatURL ? <a href={wechatURL} target="_blank">
+                <IconButton sx={style.button} size="large">
+                  <StyledWeChatIcon />
+                </IconButton>
+              </a> : null
+            )}
+          </I18nRead>
+          <I18nRead id="youtube_url">
+            {(youtubeURL: string) => (
+              youtubeURL ? <a href={youtubeURL} target="_blank">
+                <IconButton sx={style.button} size="large">
+                  <YouTubeIcon sx={[style.icon, style.youtube]} />
+                </IconButton>
+              </a> : null
+            )}
+          </I18nRead>
+        </Paper>
+      </Paper>
+    </Container>
+  );
+};

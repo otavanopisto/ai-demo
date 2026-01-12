@@ -1,0 +1,148 @@
+import React from "react";
+
+import I18nRead from "@onzag/itemize/client/components/localization/I18nRead";
+import Link from "@onzag/itemize/client/components/navigation/Link";
+
+import { styled, Theme } from "@mui/material/styles";
+import CopyrightIcon from "@mui/icons-material/Copyright";
+import { LanguagePicker } from "@onzag/itemize/client/fast-prototyping/components/language-picker";
+import { CurrencyPicker } from "@onzag/itemize/client/fast-prototyping/components/currency-picker";
+import { CountryPicker } from "@onzag/itemize/client/fast-prototyping/components/country-picker";
+import Box from "@mui/material/Box";
+
+/**
+ * Styles of the footer
+ * @param theme the mui theme
+ * @returns a bunch of styles
+ */
+const style = {
+  container: (theme: Theme) => ({
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: "3rem",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    padding: "0.5rem 0",
+    [theme.breakpoints.down('md')]: {
+      padding: "1rem 0",
+    },
+  } as any),
+  containerAbs: (theme: Theme) => ({
+    position: "absolute",
+    bottom: 0,
+    backgroundColor: theme.palette.grey[900],
+  }),
+  dataSet: (theme: Theme) => ({
+    lineHeight: 0,
+    height: "2.5rem",
+    flex: "1 1 0",
+    padding: "0.2rem 1rem",
+    color: "white",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    [theme.breakpoints.down('md')]: {
+      flex: "1 0 100%",
+      padding: "0.5rem 0",
+    },
+  }),
+  dataSetAbs: (theme: Theme) => ({
+    "& div:first-of-type": {
+      flex: "2 1 0",
+    },
+    "&:not(:last-child)": {
+      [theme.breakpoints.up("md")]: {
+        borderRight: "solid 1px #aaa",
+      },
+    },
+  }),
+  copyInfo: (theme: Theme) => ({
+    [theme.breakpoints.down('sm')]: {
+      display: "none",
+    },
+  }),
+  link: {
+    color: "inherit",
+    textDecoration: "none",
+  },
+  spacer: {
+    width: "6px",
+    display: "inline-block",
+    height: "2px",
+  },
+};
+
+const Spacer = styled("span")(style.spacer);
+
+interface IContainer {
+  abs?: boolean;
+  type?: "container" | "dataset";
+}
+
+const Container = styled("div", {
+  shouldForwardProp: (p) => p !== "abs" && p !== "type"
+})<IContainer>(({ abs, type, theme}) => {
+  const basicContainer = type === "dataset" ? style.dataSet(theme) : style.container(theme);
+
+  if (abs) {
+    const absContainer = type === "dataset" ? style.dataSetAbs(theme) : style.containerAbs(theme);
+    Object.assign(basicContainer, absContainer);
+  }
+
+  return basicContainer;
+});
+
+const StyledLink = styled(Link)(style.link);
+
+/**
+ * The footer itself
+ * takes no props
+ */
+export function Footer() {
+  const year = (new Date()).getUTCFullYear();
+  // the first represents the spacer, the second is the actual footer
+  return (
+    <>
+      <Container>
+        <Container type="dataset"/>
+        <Container type="dataset"/>
+        <Container type="dataset"/>
+        <Container type="dataset"/>
+      </Container>
+      <Container abs={true}>
+        <Container type="dataset" abs={true}>
+          <CopyrightIcon />
+          <Spacer />
+          <Spacer />
+          {year}
+          <Spacer />
+          <Box component="span" sx={style.copyInfo}>
+            <I18nRead id="app_short_name" capitalize={true} />
+          </Box>
+          <Spacer />
+          <Spacer />
+          <LanguagePicker useCode={true} />
+          <CountryPicker useCode={true} />
+          <CurrencyPicker useCode={true} />
+        </Container>
+        <Container type="dataset" abs={true}>
+          <StyledLink to="/contact">
+            <I18nRead id="contact" capitalize={true} />
+          </StyledLink>
+        </Container>
+        <Container type="dataset" abs={true}>
+          <StyledLink to="/terms-and-conditions">
+            <I18nRead id="terms_and_conditions" capitalize={true} />
+          </StyledLink>
+        </Container>
+        <Container type="dataset" abs={true}>
+          <StyledLink to="/privacy-policy">
+            <I18nRead id="privacy_policy" capitalize={true} />
+          </StyledLink>
+        </Container>
+      </Container>
+    </>
+  );
+};

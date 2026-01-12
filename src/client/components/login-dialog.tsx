@@ -1,0 +1,198 @@
+import React from "react";
+
+import { DialogResponsive } from "@onzag/itemize/client/fast-prototyping/components/dialog";
+import { ItemProvider } from "@onzag/itemize/client/providers/item";
+import { LogActioner } from "@onzag/itemize/client/components/login/LogActioner";
+import I18nRead from "@onzag/itemize/client/components/localization/I18nRead";
+import Entry from "@onzag/itemize/client/components/property/Entry";
+
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Divider from "@mui/material/Divider";
+import DoneIcon from "@mui/icons-material/Done";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { ProgressingElement } from "@onzag/itemize/client/fast-prototyping/components/util";
+import Snackbar from "@onzag/itemize/client/fast-prototyping/components/snackbar";
+import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
+
+/**
+ * The login dialog styles
+ */
+const style = {
+  welcomeTitle: {
+    paddingBottom: "1rem",
+    fontWeight: 300,
+  },
+  loginButtonWrapper: {
+    marginTop: "1.5rem",
+  },
+  titleContainer: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+  },
+  image: {
+    height: "64px",
+    width: "64px",
+  },
+  forgotPasswordButton: {
+    marginTop: "1rem",
+  },
+  divider: {
+    margin: "1rem 0",
+  },
+};
+
+/**
+ * The login dialog props
+ */
+interface ILoginDialogProps {
+  /**
+   * whether it is currently opened
+   */
+  open: boolean;
+  /**
+   * triggers on close
+   */
+  onClose: () => void;
+  /**
+   * When the user requests to signup
+   */
+  onSignupRequest: () => void;
+  /**
+   * When the user requests for password recovery
+   */
+  onRecoverRequest: () => void;
+}
+
+/**
+ * simple utlity to run a couple of functions at once
+ * @param functions the many functions
+ */
+function runManyFunctions(functions: Array<() => void>) {
+  functions.forEach((f) => f());
+}
+
+const StyledProgressingElement = styled(ProgressingElement)(style.loginButtonWrapper);
+const StyledImg = styled("img")(style.image);
+
+/**
+ * A fully compatible with the navbar fast prototyping login dialog for the user
+ * to fill in, contains its own item definition provider, but it must be into
+ * a module provider context
+ * @param props the login props
+ * @returns a react component
+ */
+export function LoginDialog(props: ILoginDialogProps) {
+  return (
+    <ItemProvider
+      itemDefinition="user"
+      properties={["username", "password"]}
+    >
+      <LogActioner>
+        {(actioner) => (
+          <I18nRead id="login" capitalize={true}>
+            {(i18nLogin: string) => (
+              <DialogResponsive
+                open={props.open}
+                onClose={
+                  runManyFunctions.bind(
+                    null,
+                    [actioner.dismissError, actioner.cleanUnsafeFields, props.onClose],
+                  )
+                }
+                title={i18nLogin}
+              >
+                <Box sx={style.titleContainer}>
+                  <StyledImg src="/rest/resource/icons/android-chrome-64x64.png"/>
+                  <Typography variant="h4" sx={style.welcomeTitle}>
+                    <I18nRead id="login_welcome" capitalize={true}/>
+                  </Typography>
+                </Box>
+                <form>
+                  <I18nRead id="login_alt_field_label">
+                    {(i18nAltLabel: string) => (
+                      <I18nRead id="login_alt_field_placeholder">
+                        {(i18nAltPlaceholder: string) => (
+                          <Entry
+                            id="username"
+                            onEntryDrivenChange={actioner.dismissError}
+                            showAsInvalid={!!actioner.error}
+                            ignoreErrors={true}
+                            altLabel={i18nAltLabel}
+                            altPlaceholder={i18nAltPlaceholder}
+                            rendererArgs={{
+                              icon: <AccountCircleIcon />,
+                            }}
+                            autoFocus={true}
+                          />
+                        )}
+                      </I18nRead>
+                    )}
+                  </I18nRead>
+                  <Entry id="password" onEntryDrivenChange={actioner.dismissError} showAsInvalid={!!actioner.error} />
+
+                  <StyledProgressingElement
+                    isProgressing={actioner.isLoggingIn}
+                    fullWidth={true}
+                  >
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      size="large"
+                      aria-label={i18nLogin}
+                      startIcon={<DoneIcon />}
+                      onClick={actioner.login.bind(null, true)}
+                      fullWidth={true}
+                    >
+                      {i18nLogin}
+                    </Button>
+                  </StyledProgressingElement>
+                  <I18nRead id="forgot_password_question">
+                    {(i18nForgotPassword: string) => (
+                      <Button
+                        sx={style.forgotPasswordButton}
+                        color="primary"
+                        variant="text"
+                        size="small"
+                        fullWidth={true}
+                        aria-label={i18nForgotPassword}
+                        onClick={props.onRecoverRequest}
+                      >
+                        {i18nForgotPassword}
+                      </Button>
+                    )}
+                  </I18nRead>
+                  <Divider sx={style.divider}/>
+                  <I18nRead id="signup_instead">
+                    {(i18nSignupInstead: string) => (
+                      <Button
+                        color="secondary"
+                        variant="text"
+                        fullWidth={true}
+                        aria-label={i18nSignupInstead}
+                        onClick={props.onSignupRequest}
+                      >
+                        {i18nSignupInstead}
+                      </Button>
+                    )}
+                  </I18nRead>
+                </form>
+                <Snackbar
+                  id="login-dialog-error"
+                  severity="error"
+                  i18nDisplay={actioner.error}
+                  open={!!actioner.error}
+                  onClose={actioner.dismissError}
+                />
+              </DialogResponsive>
+            )}
+          </I18nRead>
+        )}
+      </LogActioner>
+    </ItemProvider>
+  );
+};

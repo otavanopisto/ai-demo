@@ -1,0 +1,286 @@
+/**
+ * This file contains the articles, and are added just as an addon
+ * in order to display the capabilities of itemize to handle such articles
+ * in the test, feel free to remove articles, this file as well
+ * as the json file it references in the cms
+ */
+
+import React, { useState } from "react";
+
+import { ItemProvider } from "@onzag/itemize/client/providers/item";
+import Entry from "@onzag/itemize/client/components/property/Entry";
+import SubmitActioner from "@onzag/itemize/client/components/item/SubmitActioner";
+
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import WebIcon from "@mui/icons-material/Web";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { SubmitButton } from "@onzag/itemize/client/fast-prototyping/components/buttons";
+import Snackbar from "@onzag/itemize/client/fast-prototyping/components/snackbar";
+import Route from "@onzag/itemize/client/components/navigation/Route";
+import Link from "@onzag/itemize/client/components/navigation/Link";
+import { LanguagePicker } from "@onzag/itemize/client/fast-prototyping/components/language-picker";
+import { SearchLoaderWithPagination } from "@onzag/itemize/client/fast-prototyping/components/search-loader-with-pagination";
+import View from "@onzag/itemize/client/components/property/View";
+import AppLanguageRetriever from "@onzag/itemize/client/components/localization/AppLanguageRetriever";
+import Setter from "@onzag/itemize/client/components/property/Setter";
+import { useQSPaginator } from "@onzag/itemize/client/components/search/Pagination";
+
+/**
+ * The article styles that are used
+ * in the page itself
+ */
+const style = {
+  paper: {
+    padding: "1rem",
+  },
+  container: {
+    paddingTop: "1rem",
+  },
+  box: {
+    paddingBottom: "1rem",
+  },
+  listItem: {
+    borderBottom: "solid 1px #ccc",
+    transition: "backgroundColor 0.3s",
+    "&:hover": {
+      backgroundColor: "rgba(0,0,0,0.05)",
+    },
+  },
+  paginatorContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    paddingTop: "1rem",
+  },
+};
+
+function ArticleIndex() {
+  const paginator = useQSPaginator({
+    pageSize: 10,
+    windowSize: 500,
+  });
+  const [locale, setLocale] = useState<string>(null);
+  function setLocaleFiltered(newCode: string) {
+    setLocale(newCode);
+  }
+  return (
+        <Container maxWidth="md" sx={style.container}>
+      <Paper sx={style.paper}>
+        <Link to="/cms/article/new">
+          <IconButton size="large">
+            <AddCircleIcon />
+          </IconButton>
+        </Link>
+        <LanguagePicker
+          currentCode={locale}
+          allowUnspecified={true}
+          handleLanguageChange={setLocaleFiltered}
+        />
+        <List>
+          <ItemProvider
+            itemDefinition="article"
+            searchCounterpart={true}
+            automaticSearch={{
+              limit: paginator.limit,
+              offset: paginator.offset,
+              requestedProperties: [
+                "title",
+              ],
+              searchByProperties: [
+                "locale"
+              ],
+            }}
+            setters={
+              [
+                {
+                  id: "locale",
+                  searchVariant: "search",
+                  value: locale,
+                },
+              ]
+            }
+          >
+            <SearchLoaderWithPagination
+              id="article-search-loader"
+              paginator={paginator}
+            >
+              {(arg, pagination) => {
+                return (
+                  <>
+                    {arg.searchRecords.map((r) => {
+                      return (
+                        <ItemProvider {...r.providerProps}>
+                          <Link to={"/cms/article/" + r.id} key={r.id}>
+                            <ListItem sx={style.listItem}>
+                              <ListItemIcon>
+                                <WebIcon />
+                              </ListItemIcon>
+                              <ListItemText primary={<View id="title" />} secondary={r.id} />
+                            </ListItem>
+                          </Link>
+                        </ItemProvider>
+                      );
+                    })}
+                    <Box sx={style.paginatorContainer}>
+                      {pagination}
+                    </Box>
+                  </>
+                );
+              }}
+            </SearchLoaderWithPagination>
+          </ItemProvider>
+        </List>
+      </Paper>
+    </Container>
+    );
+};
+
+export function Article() {
+  return (
+    <>
+      <Route
+        path="/cms/article"
+        exact={true}
+        component={ArticleIndex}
+      />
+      <Route
+        path="/cms/article/:id"
+        exact={true}
+        component={SingleArticle}
+      />
+    </>
+  );
+}
+
+interface ISingleArticleProps {
+  match: {
+    params: {
+      id: string;
+    };
+  };
+}
+
+interface ILocaleEntry {
+  code: string;
+}
+
+/**
+ * This component allows for setting the locale using the
+ * language picker rather than the standard entry, for that we
+ * take the language code from the app language retriever and create
+ * a state based on that for the initial state, and now we can
+ * define a setter with the language picker
+ * @param props the locale entry props that we defined before
+ */
+function LocaleEntry(props: ILocaleEntry) {
+  const [locale, setLocale] = useState(props.code);
+  function setLocaleFiltered(newCode: string) {
+    setLocale(newCode);
+  }
+  return (
+    <>
+      <Setter id="locale" value={locale} />
+      <LanguagePicker
+        currentCode={locale}
+        handleLanguageChange={setLocaleFiltered}
+      />
+    </>
+  );
+}
+
+/**
+ * The fragment section itself that allows modifying and creating new fragments
+ * @param props the fragment styles
+ * @returns a react element
+ */
+function SingleArticle(props: ISingleArticleProps) {
+  const articleId = props.match.params.id;
+  return (
+    <ItemProvider
+      itemDefinition="article"
+      properties={[
+        "title",
+        "content",
+        "attachments",
+        "locale",
+        "summary",
+        "summary_image",
+      ]}
+      includePolicies={false}
+      longTermCaching={false}
+      forId={articleId === "new" ? null : articleId}
+    >
+      <Container maxWidth="md" sx={style.container} className="trusted">
+        <Paper sx={style.paper}>
+          <Box sx={style.box}>
+            {
+              articleId !== "new" ?
+                (
+                  <View id="locale" />
+                ) :
+                (
+                  <AppLanguageRetriever>
+                    {(arg) => (
+                      <LocaleEntry code={arg.currentLanguage.code} />
+                    )}
+                  </AppLanguageRetriever>
+                )
+            }
+          </Box>
+
+          <Entry id="title" />
+          <Entry id="summary" />
+          <Entry id="content" />
+          <Entry id="summary_image" />
+
+          <SubmitButton
+            i18nId="submit"
+            buttonVariant="contained"
+            buttonColor="primary"
+            options={{
+              properties: [
+                "title",
+                "content",
+                "attachments",
+                "locale",
+                "summary",
+                "summary_image",
+              ],
+            }}
+          />
+
+        </Paper>
+      </Container>
+
+      <SubmitActioner>
+        {(actioner) => (
+          <>
+            <Snackbar
+              id="submit-article-error"
+              severity="error"
+              i18nDisplay={actioner.submitError}
+              open={!!actioner.submitError}
+              onClose={actioner.dismissError}
+            />
+            <Snackbar
+              id="submit-article-success"
+              severity="success"
+              i18nDisplay="success"
+              open={actioner.submitted}
+              onClose={actioner.dismissSubmitted}
+            />
+          </>
+        )}
+      </SubmitActioner>
+
+    </ItemProvider>
+  );
+};

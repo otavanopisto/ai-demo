@@ -1,0 +1,168 @@
+import React from "react";
+
+import { countries } from "@onzag/itemize/imported-resources";
+import Reader from "@onzag/itemize/client/components/property/Reader";
+import I18nRead from "@onzag/itemize/client/components/localization/I18nRead";
+import View from "@onzag/itemize/client/components/property/View";
+import UserDataRetriever from "@onzag/itemize/client/components/user/UserDataRetriever";
+
+import { Theme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import AlernateEmailIcon from "@mui/icons-material/AlternateEmail";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Tooltip from "@mui/material/Tooltip";
+import Badge from "@mui/material/Badge";
+import Card from "@mui/material/Card";
+import Box from "@mui/material/Box";
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
+
+import { ItemLoader } from "@onzag/itemize/client/fast-prototyping/components/item-loader";
+import { AdminToolbox } from "./admin-toolbox";
+import { Avatar } from "../../components/avatar";
+
+/**
+ * contains the styles for the public user profile
+ * @param theme the mui theme
+ * @returns a bunch of styles
+ */
+const style = {
+  container: {
+    paddingTop: "1rem",
+  },
+  paper: {
+    padding: "1rem",
+  },
+  username: {
+    fontWeight: 300,
+    width: "100%",
+    marginTop: "1rem",
+    textAlign: "center",
+  },
+  country: {
+    fontWeight: 300,
+    width: "100%",
+    marginTop: "0.5rem",
+    textAlign: "center",
+  },
+  role: {
+    fontWeight: 300,
+    width: "100%",
+    marginTop: "0.5rem",
+    textAlign: "center",
+  },
+  verifiedIcon: (theme: Theme) => ({
+    color: theme.palette.success.main,
+  }),
+  aboutMeCard: {
+    marginTop: "1rem",
+    padding: "1rem",
+  },
+  spacer: {
+    width: "6px",
+    height: "2px",
+    display: "inline-block",
+  },
+};
+
+/**
+ * The public user profile contains basic information that can be accessed about the current public user
+ * @param props the public user profile props
+ * @returns a react element
+ */
+export function PublicUserProfile() {
+  return (
+    <>
+      <Container maxWidth="md" sx={style.container}>
+        <Paper sx={style.paper}>
+          <ItemLoader>
+            <Avatar size="large" hideFlag={true} fullWidth={true} />
+            <Reader id="e_validated">
+              {(eValidated: boolean) => (
+                <Reader id="p_validated">
+                  {(pValidated: boolean) => (
+                    <Reader id="username">
+                      {(username: string) => (
+                        <Typography variant="h4" sx={style.username}>
+                          {username}
+                          {eValidated ? <span>
+                            <Box component="span" sx={style.spacer} />
+                            <I18nRead id="label" propertyId="e_validated" capitalize={true}>
+                              {(i18nUserValidated: string) => (
+                                <Tooltip title={i18nUserValidated}>
+                                  <Badge badgeContent={<VerifiedUserIcon sx={style.verifiedIcon} />}>
+                                    <AlernateEmailIcon />
+                                  </Badge>
+                                </Tooltip>
+                              )}
+                            </I18nRead>
+                          </span> : null}
+                          {pValidated ? <span>
+                            <Box component="span" sx={style.spacer} />
+                            <I18nRead id="label" propertyId="p_validated" capitalize={true}>
+                              {(i18nUserValidated: string) => (
+                                <Tooltip title={i18nUserValidated}>
+                                  <Badge badgeContent={<VerifiedUserIcon sx={style.verifiedIcon} />}>
+                                    <PhoneIphoneIcon />
+                                  </Badge>
+                                </Tooltip>
+                              )}
+                            </I18nRead>
+                          </span> : null}
+                        </Typography>
+                      )}
+                    </Reader>
+                  )}
+                </Reader>
+              )}
+            </Reader>
+          </ItemLoader>
+          <Reader id="app_country">
+            {(country: string) => {
+              if (!country) {
+                return null;
+              }
+              const countryobj = countries[country];
+              return (
+                <Typography
+                  variant="h5"
+                  sx={style.country}
+                >
+                  {countryobj.emoji + " " + countryobj.native}
+                </Typography>
+              );
+            }}
+          </Reader>
+          <Reader id="role">
+            {(role: string) => {
+              if (role !== "USER") {
+                return (
+                  <Typography
+                    variant="h5"
+                    sx={style.role}
+                  >
+                    <View id="role" capitalize={true} />
+                  </Typography>
+                );
+              }
+              return null;
+            }}
+          </Reader>
+          <UserDataRetriever>
+            {(userData) => {
+              if (userData.role === "ADMIN") {
+                return <AdminToolbox />;
+              }
+
+              return null;
+            }}
+          </UserDataRetriever>
+          <Card sx={style.aboutMeCard} variant="outlined">
+            <View id="about_me" />
+          </Card>
+        </Paper>
+      </Container>
+    </>
+  );
+};

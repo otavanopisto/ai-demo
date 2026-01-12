@@ -1,0 +1,5 @@
+{
+    "type": "module",
+    "children": ["flag"],
+    "searchable": false
+}
