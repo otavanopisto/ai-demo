@@ -15,7 +15,7 @@ export function Articles() {
     <>
       <ModuleProvider module="cms">
         <NoStateItemProvider itemDefinition="article">
-          <I18nRead id="news" capitalize={true}>
+          <I18nRead i18nId="news" capitalize={true}>
             {(i18nNews: string) => {
               return (
                 <TitleSetter>

@@ -11,14 +11,14 @@ import HTMLResourceLoader from "@onzag/itemize/client/components/resources/HTMLR
 export function PrivacyPolicy() {
   return (
     <>
-      <I18nRead id="privacy_policy" capitalize={true}>
+      <I18nRead i18nId="privacy_policy" capitalize={true}>
         {(i18nPrivacyPolicy: string) => (
           <TitleSetter>
             {i18nPrivacyPolicy}
           </TitleSetter>
         )}
       </I18nRead>
-      <I18nRead id="privacy_policy_url">
+      <I18nRead i18nId="privacy_policy_url">
         {(privacyPolicyURL: string) => (
           <HTMLResourceLoader src={privacyPolicyURL} />
         )}

@@ -106,7 +106,7 @@ export function SignupDialog(props: ISignupDialogProps) {
     >
       <LogActioner>
         {(actioner) => (
-          <I18nRead id="signup" capitalize={true}>
+          <I18nRead i18nId="signup" capitalize={true}>
             {(i18nSignup: string) => (
               <DialogResponsive
                 open={props.open}
@@ -120,7 +120,7 @@ export function SignupDialog(props: ISignupDialogProps) {
               >
                 <Box sx={style.titleContainer}>
                   <Typography variant="h4" sx={style.welcomeTitle}>
-                    <I18nRead id="signup_welcome" capitalize={true}/>
+                    <I18nRead i18nId="signup_welcome" capitalize={true}/>
                   </Typography>
                 </Box>
                 <form>
@@ -170,15 +170,15 @@ export function SignupDialog(props: ISignupDialogProps) {
                 </StyledProgressingElement>
                 <I18nReadMany
                   data={[{
-                    id: "terms_and_conditions",
+                    i18nId: "terms_and_conditions",
                   }, {
-                    id: "privacy_policy",
+                    i18nId: "privacy_policy",
                   }]}
                 >
                   {(i18nTermsAndConditions: string, i18nPrivacyPolicy: string) => (
                     <Typography variant="caption" sx={style.signupComplyCaption}>
                       <I18nRead
-                        id="signup_accept_terms"
+                        i18nId="signup_accept_terms"
                         capitalize={true}
                         args={[
                           <Link to="/terms-and-conditions">{i18nTermsAndConditions}</Link>,
@@ -189,7 +189,7 @@ export function SignupDialog(props: ISignupDialogProps) {
                   )}
                 </I18nReadMany>
                 <Divider sx={style.divider}/>
-                <I18nRead id="login_instead">
+                <I18nRead i18nId="login_instead">
                   {(i18nLoginInstead: string) => (
                     <Button
                       color="secondary"

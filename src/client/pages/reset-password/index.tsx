@@ -120,7 +120,7 @@ export function ResetPassword() {
                 propertiesToRestoreOnAny: ["password"],
               }}
             >
-              <I18nRead id="reset_password" capitalize={true}>
+              <I18nRead i18nId="reset_password" capitalize={true}>
                 {(i18nResetPassword: string) => (
                   <>
                     <TitleSetter>
@@ -141,11 +141,11 @@ export function ResetPassword() {
                           </> : null
                         }
                         <Typography variant="h6" sx={style.recoverTitle}>{i18nResetPassword}</Typography>
-                        <I18nRead id="reset_password_field_alt_label">
+                        <I18nRead i18nId="reset_password_field_alt_label">
                           {(i18nAltLabel: string) => (
-                            <I18nRead id="reset_password_field_alt_placeholder">
+                            <I18nRead i18nId="reset_password_field_alt_placeholder">
                               {(i18nAltPlaceholder: string) => (
-                                <I18nRead id="reset_password_message">
+                                <I18nRead i18nId="reset_password_message">
                                   {(i18nAltDescription: string) => (
                                     <Entry
                                       id="password"
@@ -160,7 +160,7 @@ export function ResetPassword() {
                             </I18nRead>
                           )}
                         </I18nRead>
-                        {state.userandomid ? <I18nRead id="reset_password_insert_code_label">
+                        {state.userandomid ? <I18nRead i18nId="reset_password_insert_code_label">
                           {(i18nLabel: string) => (
                             <TextField
                               variant="filled"
@@ -175,7 +175,7 @@ export function ResetPassword() {
                         <UserActioner>
                           {(actioner) => (
                             <>
-                              <I18nRead id="reset_password_action">
+                              <I18nRead i18nId="reset_password_action">
                                 {(i18nUpdatePassword: string) => (
                                   <ProgressingElement isProgressing={actioner.statefulOnProgress} fullWidth={true}>
                                     <Button

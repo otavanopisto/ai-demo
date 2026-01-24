@@ -94,7 +94,7 @@ export function LoginDialog(props: ILoginDialogProps) {
     >
       <LogActioner>
         {(actioner) => (
-          <I18nRead id="login" capitalize={true}>
+          <I18nRead i18nId="login" capitalize={true}>
             {(i18nLogin: string) => (
               <DialogResponsive
                 open={props.open}
@@ -109,13 +109,13 @@ export function LoginDialog(props: ILoginDialogProps) {
                 <Box sx={style.titleContainer}>
                   <StyledImg src="/rest/resource/icons/android-chrome-64x64.png"/>
                   <Typography variant="h4" sx={style.welcomeTitle}>
-                    <I18nRead id="login_welcome" capitalize={true}/>
+                    <I18nRead i18nId="login_welcome" capitalize={true}/>
                   </Typography>
                 </Box>
                 <form>
-                  <I18nRead id="login_alt_field_label">
+                  <I18nRead i18nId="login_alt_field_label">
                     {(i18nAltLabel: string) => (
-                      <I18nRead id="login_alt_field_placeholder">
+                      <I18nRead i18nId="login_alt_field_placeholder">
                         {(i18nAltPlaceholder: string) => (
                           <Entry
                             id="username"
@@ -151,7 +151,7 @@ export function LoginDialog(props: ILoginDialogProps) {
                       {i18nLogin}
                     </Button>
                   </StyledProgressingElement>
-                  <I18nRead id="forgot_password_question">
+                  <I18nRead i18nId="forgot_password_question">
                     {(i18nForgotPassword: string) => (
                       <Button
                         sx={style.forgotPasswordButton}
@@ -167,7 +167,7 @@ export function LoginDialog(props: ILoginDialogProps) {
                     )}
                   </I18nRead>
                   <Divider sx={style.divider}/>
-                  <I18nRead id="signup_instead">
+                  <I18nRead i18nId="signup_instead">
                     {(i18nSignupInstead: string) => (
                       <Button
                         color="secondary"

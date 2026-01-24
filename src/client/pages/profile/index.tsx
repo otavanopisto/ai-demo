@@ -46,7 +46,7 @@ export function Profile(props: IProfileProps) {
         forId={currentUserId}
         includePolicies={false}
       >
-        <I18nRead id="profile" capitalize={true}>
+        <I18nRead i18nId="profile" capitalize={true}>
           {(i18nProfile: string) => {
             return (
               <TitleSetter>

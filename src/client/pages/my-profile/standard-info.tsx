@@ -74,12 +74,12 @@ export function CustomConfirmationDialog(props: ICustomConfirmationDialogProps) 
       data={
         [
           {
-            id: "title",
+            i18nId: "title",
             policyType: "edit",
             policyName: "REQUIRES_PASSWORD_CONFIRMATION",
           },
           {
-            id: "ok",
+            i18nId: "ok",
           },
         ]
       }
@@ -169,9 +169,9 @@ function AlertBoxMissing(props: AlertBoxMissingProps) {
                 return (
                   <Alert severity="error">
                     <AlertTitle>
-                      <I18nRead capitalize={true} id="missing_email_and_phone_warning_title" />
+                      <I18nRead capitalize={true} i18nId="missing_email_and_phone_warning_title" />
                     </AlertTitle>
-                    <I18nRead id="missing_email_and_phone_warning" />
+                    <I18nRead i18nId="missing_email_and_phone_warning" />
                   </Alert>
                 );
               }
@@ -179,7 +179,7 @@ function AlertBoxMissing(props: AlertBoxMissingProps) {
               if (props.propertyId === "email" ? missesEmail : missesPhone) {
                 return (
                   <Alert severity="error">
-                    <I18nRead capitalize={true} id={"missing_" + props.propertyId + "_warning_title"} />
+                    <I18nRead capitalize={true} i18nId={"missing_" + props.propertyId + "_warning_title"} />
                   </Alert>
                 );
               }
@@ -192,7 +192,7 @@ function AlertBoxMissing(props: AlertBoxMissingProps) {
                       return (
                         <Alert severity="error">
                           <AlertTitle>
-                            <I18nRead capitalize={true} id={"missing_" + props.propertyId + "_validation_warning_title"} />
+                            <I18nRead capitalize={true} i18nId={"missing_" + props.propertyId + "_validation_warning_title"} />
                           </AlertTitle>
                           <Box sx={style.alertButtonValidateEmailContainer}>
                             <UserActioner>
@@ -217,13 +217,13 @@ function AlertBoxMissing(props: AlertBoxMissingProps) {
                                       endIcon={<MailIcon />}
                                       onClick={props.propertyId === "email" ? actioner.sendValidateEmail : sendValidateSMS}
                                     >
-                                      <I18nRead capitalize={true} id={"missing_" + props.propertyId + "_validation_warning_action"} />
+                                      <I18nRead capitalize={true} i18nId={"missing_" + props.propertyId + "_validation_warning_action"} />
                                       <Box component="i" sx={style.emailOrPhoneInButton}>
                                         {" " + (props.propertyId === "email" ? emailState.stateAppliedValue : phoneState.stateAppliedValue)}
                                       </Box>
                                     </Button> :
                                       <>
-                                        <I18nRead capitalize={true} id={"missing_" + props.propertyId + "_validation_insert_code_label"}>
+                                        <I18nRead capitalize={true} i18nId={"missing_" + props.propertyId + "_validation_insert_code_label"}>
                                           {(i18nLabel: string) => (
                                             <TextField
                                               value={codeValue}
@@ -234,7 +234,7 @@ function AlertBoxMissing(props: AlertBoxMissingProps) {
                                             />
                                           )}
                                         </I18nRead>
-                                        <I18nRead id="ok">
+                                        <I18nRead i18nId="ok">
                                           {(i18nOk: string) => (
                                             <IconButton onClick={validateFromCode} title={i18nOk} size="large">
                                               <DoneIcon />
@@ -302,8 +302,8 @@ export function CurrentUserProfileStandardInfo() {
           <I18nReadMany
             data={
               [
-                { id: "change_password" },
-                { id: "update_your_preferences" },
+                { i18nId: "change_password" },
+                { i18nId: "update_your_preferences" },
               ]
             }
           >

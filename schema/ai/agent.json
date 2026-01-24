@@ -1,0 +1,32 @@
+{
+    "type": "item",
+    "properties": [
+        {
+            "id": "name",
+            "type": "text",
+            "unique": true
+        },
+        {
+            "id": "description",
+            "type": "text",
+            "subtype": "plain",
+            "searchable": false
+        },
+        {
+            "id": "behaviour",
+            "type": "text",
+            "subtype": "plain",
+            "searchable": false
+        },
+        {
+            "id": "expertise",
+            "type": "text",
+            "subtype": "plain",
+            "searchable": false
+        }
+    ],
+    "createRoleAccess": ["&ANYONE_LOGGED"],
+    "readRoleAccess": ["&ANYONE_LOGGED"],
+    "editRoleAccess": ["&OWNER", "TEACHER"],
+    "deleteRoleAccess": ["&OWNER", "TEACHER"]
+}

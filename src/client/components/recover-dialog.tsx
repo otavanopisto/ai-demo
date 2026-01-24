@@ -87,7 +87,7 @@ export function RecoverDialog(props: IRecoverDialogProps) {
               }
 
               return (
-                <I18nRead id="recover_account" capitalize={true}>
+                <I18nRead i18nId="recover_account" capitalize={true}>
                   {(i18nRecover: string) => (
                     <DialogResponsive
                       open={props.open}
@@ -102,7 +102,7 @@ export function RecoverDialog(props: IRecoverDialogProps) {
                       <Reader id="phone">
                         {(phone: string) => (
                           <Alert severity="info">
-                            <I18nRead id={phone ? "recover_account_message_phone" : "recover_account_message"} />
+                            <I18nRead i18nId={phone ? "recover_account_message_phone" : "recover_account_message"} />
                           </Alert>
                         )}
                       </Reader>
@@ -139,7 +139,7 @@ export function RecoverDialog(props: IRecoverDialogProps) {
                       </form>
                       <Reader id="phone">
                         {(phone: string) => (
-                          <I18nRead id={phone ? "recover_account_action_phone" : "recover_account_action"}>
+                          <I18nRead i18nId={phone ? "recover_account_action_phone" : "recover_account_action"}>
                             {(i18nRecoverAction: string) => (
                               <StyledProgressingElement
                                 isProgressing={actioner.statefulOnProgress}
@@ -166,7 +166,7 @@ export function RecoverDialog(props: IRecoverDialogProps) {
                         )}
                       </Reader>
                       <Divider sx={style.divider} />
-                      <I18nRead id="login">
+                      <I18nRead i18nId="login">
                         {(i18nLogin: string) => (
                           <Button
                             color="secondary"

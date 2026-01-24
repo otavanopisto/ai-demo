@@ -68,7 +68,7 @@ export function Preferences() {
                 propertiesToRestoreOnAny: properties,
               }}
             >
-              <I18nRead id="preferences" capitalize={true}>
+              <I18nRead i18nId="preferences" capitalize={true}>
                 {(i18nPreferences: string) => {
                   return (
                     <TitleSetter>

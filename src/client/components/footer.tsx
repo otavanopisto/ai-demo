@@ -119,7 +119,7 @@ export function Footer() {
           {year}
           <Spacer />
           <Box component="span" sx={style.copyInfo}>
-            <I18nRead id="app_short_name" capitalize={true} />
+            <I18nRead i18nId="app_short_name" capitalize={true} />
           </Box>
           <Spacer />
           <Spacer />
@@ -129,17 +129,17 @@ export function Footer() {
         </Container>
         <Container type="dataset" abs={true}>
           <StyledLink to="/contact">
-            <I18nRead id="contact" capitalize={true} />
+            <I18nRead i18nId="contact" capitalize={true} />
           </StyledLink>
         </Container>
         <Container type="dataset" abs={true}>
           <StyledLink to="/terms-and-conditions">
-            <I18nRead id="terms_and_conditions" capitalize={true} />
+            <I18nRead i18nId="terms_and_conditions" capitalize={true} />
           </StyledLink>
         </Container>
         <Container type="dataset" abs={true}>
           <StyledLink to="/privacy-policy">
-            <I18nRead id="privacy_policy" capitalize={true} />
+            <I18nRead i18nId="privacy_policy" capitalize={true} />
           </StyledLink>
         </Container>
       </Container>

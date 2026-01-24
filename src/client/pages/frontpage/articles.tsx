@@ -238,7 +238,7 @@ export function Articles() {
                 }}
               >
                 <Typography variant="h2" sx={style.newsTitle}>
-                  <I18nRead id="news" capitalize={true} />
+                  <I18nRead i18nId="news" capitalize={true} />
                 </Typography>
                 <SearchLoader
                   pageSize={5}
@@ -248,7 +248,7 @@ export function Articles() {
                   {(loader) => {
                     return loader.searchRecords.map((searchRecord) => {
                       return (
-                        <ItemProvider {...searchRecord.providerProps}>
+                        <ItemProvider {...searchRecord.providerArgs}>
                           <StyledLink searchRecordId={searchRecord.id}>
                             <ArticleImageContainer>
                               <StyledImageView />
@@ -303,7 +303,7 @@ export function Articles() {
                 <Box sx={style.moreNewsContainer}>
                   <Link to="/news">
                     <Button size="large" sx={style.moreNewsButton} variant="contained" color="primary">
-                      <I18nRead id="more_news" capitalize={true} />
+                      <I18nRead i18nId="more_news" capitalize={true} />
                     </Button>
                   </Link>
                 </Box>

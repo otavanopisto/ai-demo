@@ -32,8 +32,8 @@ export function Info() {
       <Paper sx={style.paper}>
         <I18nReadMany
           data={[
-            { id: "info_content" },
-            { id: "info_content_2" },
+            { i18nId: "info_content" },
+            { i18nId: "info_content_2" },
           ]}
         >
           {(i18nInfoContent1: string, i18nInfoContent2: string) => (

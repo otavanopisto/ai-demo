@@ -43,7 +43,7 @@ export const MENU_ADMIN_ENTRIES: IMenuEntry[] = [
     module: "cms",
     role: "ADMIN",
     i18nProps: {
-      id: "name",
+      i18nId: "name",
       capitalize: true,
     },
   },
@@ -57,7 +57,7 @@ export const MENU_ENTRIES: IMenuEntry[] = [
     path: "/",
     icon: <HomeIcon />,
     i18nProps: {
-      id: "home",
+      i18nId: "home",
       capitalize: true,
     },
   },
@@ -67,7 +67,7 @@ export const MENU_ENTRIES: IMenuEntry[] = [
     module: "cms",
     idef: "article",
     i18nProps: {
-      id: "news",
+      i18nId: "news",
       capitalize: true,
     },
   },
