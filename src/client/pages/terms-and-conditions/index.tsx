@@ -11,14 +11,14 @@ import HTMLResourceLoader from "@onzag/itemize/client/components/resources/HTMLR
 export function TermsAndConditions() {
   return (
     <>
-      <I18nRead id="terms_and_conditions" capitalize={true}>
+      <I18nRead i18nId="terms_and_conditions" capitalize={true}>
         {(i18nTermsAndConditions: string) => (
           <TitleSetter>
             {i18nTermsAndConditions}
           </TitleSetter>
         )}
       </I18nRead>
-      <I18nRead id="terms_and_conditions_url">
+      <I18nRead i18nId="terms_and_conditions_url">
         {(termsAndConditionsURL: string) => (
           <HTMLResourceLoader src={termsAndConditionsURL} />
         )}

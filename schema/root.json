@@ -4,7 +4,8 @@
     "users",
     "flag",
     "cms",
-    "mail"
+    "mail",
+    "ai"
   ],
   "i18n": "main-i18n.properties"
 }

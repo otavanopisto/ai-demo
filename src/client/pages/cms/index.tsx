@@ -52,7 +52,7 @@ function CMSNavBar(props: ICMSNavBarProps) {
   return (
     <AppBar position="static" variant="outlined" color="default" elevation={0}>
       <Tabs value={current} onChange={handleNavbarChangeEvent} centered={true}>
-        <Tab label={<I18nRead id="info" />} value="info" />
+        <Tab label={<I18nRead i18nId="info" />} value="info" />
         {available.map((itemDefinition: string) => {
           return (
             <Tab
@@ -61,7 +61,7 @@ function CMSNavBar(props: ICMSNavBarProps) {
                 <NoStateItemProvider
                   itemDefinition={itemDefinition}
                 >
-                  <I18nRead id="name" />
+                  <I18nRead i18nId="name" />
                 </NoStateItemProvider>
               }
               value={itemDefinition}
@@ -83,7 +83,7 @@ function CMSNavBar(props: ICMSNavBarProps) {
 export function CMS() {
   return (
     <ModuleProvider module="cms">
-      <I18nRead id="name" capitalize={true}>
+      <I18nRead i18nId="name" capitalize={true}>
         {(i18nCMS: string) => {
           return (
             <TitleSetter>

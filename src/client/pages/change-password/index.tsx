@@ -54,7 +54,7 @@ export function ChangePassword() {
               includePolicies={true}
               avoidLoading={true}
             >
-              <I18nRead id="change_password" capitalize={true}>
+              <I18nRead i18nId="change_password" capitalize={true}>
                 {(i18nChangePassword: string) => {
                   return (
                     <TitleSetter>
@@ -68,9 +68,9 @@ export function ChangePassword() {
                   <Paper sx={style.paper}>
 
                     <form>
-                      <I18nRead id="change_password_current_alt_label">
+                      <I18nRead i18nId="change_password_current_alt_label">
                         {(i18nAltCurrentPasswordLabel: string) => (
-                          <I18nRead id="change_password_current_alt_placeholder">
+                          <I18nRead i18nId="change_password_current_alt_placeholder">
                             {(i18nAltCurrentPasswordPlaceholder: string) => (
                               <Entry
                                 id="password"
@@ -85,9 +85,9 @@ export function ChangePassword() {
                         )}
                       </I18nRead>
 
-                      <I18nRead id="change_password_new_alt_label">
+                      <I18nRead i18nId="change_password_new_alt_label">
                         {(i18nAltNewPasswordLabel: string) => (
-                          <I18nRead id="change_password_new_alt_placeholder">
+                          <I18nRead i18nId="change_password_new_alt_placeholder">
                             {(i18nAltNewPasswordPlaceholder: string) => (
                               <Entry
                                 id="password"

@@ -11,7 +11,7 @@ import { Social } from "./social";
 export function Frontpage() {
   return (
     <>
-      <I18nRead id="app_name" capitalize={true}>
+      <I18nRead i18nId="app_name" capitalize={true}>
         {(i18nAppName: string) => {
           return (
             <TitleSetter>

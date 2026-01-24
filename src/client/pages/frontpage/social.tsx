@@ -90,10 +90,10 @@ export function Social() {
     <Container maxWidth="md" sx={style.container}>
       <Paper sx={style.paper}>
         <Typography variant="h3" sx={style.socialTitle}>
-          <I18nRead id="social" capitalize={true}/>
+          <I18nRead i18nId="social" capitalize={true}/>
         </Typography>
         <Paper sx={style.paper2}>
-          <I18nRead id="facebook_url">
+          <I18nRead i18nId="facebook_url">
             {(fbURL: string) => (
               fbURL ? <a href={fbURL} target="_blank">
                 <IconButton sx={style.button} size="large">
@@ -102,7 +102,7 @@ export function Social() {
               </a> : null
             )}
           </I18nRead>
-          <I18nRead id="instagram_url">
+          <I18nRead i18nId="instagram_url">
             {(instagramURL: string) => (
               instagramURL ? <a href={instagramURL} target="_blank">
                 <IconButton sx={style.button} size="large">
@@ -111,7 +111,7 @@ export function Social() {
               </a> : null
             )}
           </I18nRead>
-          <I18nRead id="linkedin_url">
+          <I18nRead i18nId="linkedin_url">
             {(linkedInURL: string) => (
               linkedInURL ? <a href={linkedInURL} target="_blank">
                 <IconButton sx={style.button} size="large">
@@ -120,7 +120,7 @@ export function Social() {
               </a> : null
             )}
           </I18nRead>
-          <I18nRead id="pinterest_url">
+          <I18nRead i18nId="pinterest_url">
             {(pinterestURL: string) => (
               pinterestURL ? <a href={pinterestURL} target="_blank">
                 <IconButton sx={style.button} size="large">
@@ -129,7 +129,7 @@ export function Social() {
               </a> : null
             )}
           </I18nRead>
-          <I18nRead id="reddit_url">
+          <I18nRead i18nId="reddit_url">
             {(redditURL: string) => (
               redditURL ? <a href={redditURL} target="_blank">
                 <IconButton sx={style.button} size="large">
@@ -138,7 +138,7 @@ export function Social() {
               </a> : null
             )}
           </I18nRead>
-          <I18nRead id="twitter_url">
+          <I18nRead i18nId="twitter_url">
             {(twitterURL: string) => (
               twitterURL ? <a href={twitterURL} target="_blank">
                 <IconButton sx={style.button} size="large">
@@ -147,7 +147,7 @@ export function Social() {
               </a> : null
             )}
           </I18nRead>
-          <I18nRead id="vk_url">
+          <I18nRead i18nId="vk_url">
             {(vkURL: string) => (
               vkURL ? <a href={vkURL} target="_blank">
                 <IconButton sx={style.button} size="large">
@@ -156,7 +156,7 @@ export function Social() {
               </a> : null
             )}
           </I18nRead>
-          <I18nRead id="wechat_url">
+          <I18nRead i18nId="wechat_url">
             {(wechatURL: string) => (
               wechatURL ? <a href={wechatURL} target="_blank">
                 <IconButton sx={style.button} size="large">
@@ -165,7 +165,7 @@ export function Social() {
               </a> : null
             )}
           </I18nRead>
-          <I18nRead id="youtube_url">
+          <I18nRead i18nId="youtube_url">
             {(youtubeURL: string) => (
               youtubeURL ? <a href={youtubeURL} target="_blank">
                 <IconButton sx={style.button} size="large">

@@ -56,14 +56,14 @@ function LogoutDialog(props: ILogoutDialogProps) {
       data={
         [
           {
-            id: "logout_all",
+            i18nId: "logout_all",
             capitalize: true,
           },
           {
-            id: "logout_all_description",
+            i18nId: "logout_all_description",
           },
           {
-            id: "cancel",
+            i18nId: "cancel",
           },
         ]
       }
@@ -129,10 +129,10 @@ export function CurrentUserProfile() {
             return (
               <Box sx={currentUserProfileStyle.logoutButtons}>
                 <Button onClick={actioner.logout} endIcon={<ExitToAppIcon />} sx={currentUserProfileStyle.button}>
-                  <I18nRead capitalize={true} id="logout" />
+                  <I18nRead capitalize={true} i18nId="logout" />
                 </Button>
                 <Button onClick={setIsDialogOpen.bind(this, true)} endIcon={<ExitToAppIcon />} sx={currentUserProfileStyle.button}>
-                  <I18nRead capitalize={true} id="logout_all" />
+                  <I18nRead capitalize={true} i18nId="logout_all" />
                 </Button>
               </Box>
             );

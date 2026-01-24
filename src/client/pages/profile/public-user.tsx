@@ -88,7 +88,7 @@ export function PublicUserProfile() {
                           {username}
                           {eValidated ? <span>
                             <Box component="span" sx={style.spacer} />
-                            <I18nRead id="label" propertyId="e_validated" capitalize={true}>
+                            <I18nRead i18nId="label" propertyId="e_validated" capitalize={true}>
                               {(i18nUserValidated: string) => (
                                 <Tooltip title={i18nUserValidated}>
                                   <Badge badgeContent={<VerifiedUserIcon sx={style.verifiedIcon} />}>
@@ -100,7 +100,7 @@ export function PublicUserProfile() {
                           </span> : null}
                           {pValidated ? <span>
                             <Box component="span" sx={style.spacer} />
-                            <I18nRead id="label" propertyId="p_validated" capitalize={true}>
+                            <I18nRead i18nId="label" propertyId="p_validated" capitalize={true}>
                               {(i18nUserValidated: string) => (
                                 <Tooltip title={i18nUserValidated}>
                                   <Badge badgeContent={<VerifiedUserIcon sx={style.verifiedIcon} />}>

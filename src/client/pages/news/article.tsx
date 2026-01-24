@@ -172,7 +172,7 @@ function ArticleContent() {
                             itemDefinition="article"
                           >
                             <Typography variant="h3" sx={style.publisher}>
-                              <I18nRead id="by" args={[username]} />
+                              <I18nRead i18nId="by" args={[username]} />
                             </Typography>
                           </NoStateItemProvider>
                         </ModuleProvider>
@@ -200,7 +200,7 @@ function ArticleContent() {
                       <>
                         <Divider orientation="vertical" flexItem={true} sx={style.divider} />
                         <I18nRead
-                          id="updated_at"
+                          i18nId="updated_at"
                           capitalize={true}
                           args={
                             [

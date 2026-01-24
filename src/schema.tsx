@@ -527,3 +527,125 @@ export function ModMailIdefMailSearchItemProvider(props: ICustomItemProviderSear
 
   return (<ItemProvider itemDefinition="MOD_mail__IDEF_mail" searchCounterpart={true} {...props}/>);
 };
+
+const propertiesBaseModAiIdefAi_PROPEXT_IDEF = [] as const;
+
+type PropertiesForSettingModAiIdefAi_PROPEXT_IDEF = {
+
+};
+
+
+const propertiesBaseModAiModSEARCH_MODE_AiIdefSEARCH_MODE_Ai_PROPEXT_IDEF = [] as const;
+const allPropertiesModAiModSEARCH_MODE_AiIdefSEARCH_MODE_Ai_PROPEXT_IDEF = (EXTERNALLY_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(STANDARD_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(propertiesBaseModAiModSEARCH_MODE_AiIdefSEARCH_MODE_Ai_PROPEXT_IDEF as unknown as string[]);
+interface IPropertiesMemoModAiModSEARCH_MODE_AiIdefSEARCH_MODE_Ai_PROPEXT_IDEF extends IPropertiesMemoBase {
+
+};
+
+type PropertiesForSettingModAiModSEARCH_MODE_AiIdefSEARCH_MODE_Ai_PROPEXT_IDEF = {
+
+};
+
+export interface ItemProviderForModAiModSEARCH_MODE_AiIdefSEARCH_MODE_Ai_PROPEXT_IDEF extends IItemProviderHookElementSearchOnly<typeof propertiesBaseModAiModSEARCH_MODE_AiIdefSEARCH_MODE_Ai_PROPEXT_IDEF[number],ModAiClientSideRqType,ModAiFlatRqType> {properties: IPropertiesMemoModAiModSEARCH_MODE_AiIdefSEARCH_MODE_Ai_PROPEXT_IDEF};
+export function useModAiSearchItemProvider(options: ICustomItemProviderSearchOptions<typeof propertiesBaseModAiIdefAi_PROPEXT_IDEF[number], PropertiesForSettingModAiIdefAi_PROPEXT_IDEF> = {}) {
+
+  const provider = useItemProvider<string, unknown, unknown>({
+    ...options,
+    itemDefinition: null,
+    module: "MOD_ai",
+    searchCounterpart: true,
+  });
+
+  const properties = usePropertiesMemoFor<IPropertiesMemoModAiModSEARCH_MODE_AiIdefSEARCH_MODE_Ai_PROPEXT_IDEF>(allPropertiesModAiModSEARCH_MODE_AiIdefSEARCH_MODE_Ai_PROPEXT_IDEF, provider);
+
+  return ({
+    ...(provider as IItemProviderHookElementSearchOnly<typeof propertiesBaseModAiModSEARCH_MODE_AiIdefSEARCH_MODE_Ai_PROPEXT_IDEF[number],ModAiClientSideRqType,ModAiFlatRqType>),
+    properties,
+  }) as ItemProviderForModAiModSEARCH_MODE_AiIdefSEARCH_MODE_Ai_PROPEXT_IDEF;
+};
+export function ModAiSearchItemProvider(props: ICustomItemProviderSearchProps<typeof propertiesBaseModAiIdefAi_PROPEXT_IDEF[number], PropertiesForSettingModAiModSEARCH_MODE_AiIdefSEARCH_MODE_Ai_PROPEXT_IDEF> = {}) {
+
+  return (<ModuleProvider module="MOD_ai"><ItemProvider searchCounterpart={true} {...props}/></ModuleProvider>);
+};
+
+const propertiesBaseModAiIdefAgent = ["name","description","behaviour","expertise"] as const;
+const allPropertiesModAiIdefAgent = (EXTERNALLY_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(STANDARD_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(propertiesBaseModAiIdefAgent as unknown as string[]);
+interface IPropertiesMemoModAiIdefAgent extends IPropertiesMemoBase {
+name: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>;
+description: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>;
+behaviour: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>;
+expertise: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>
+};
+
+type PropertiesForSettingModAiIdefAgent = {
+name: {id: "name", value: IPropertyDefinitionSupportedTextType, variant: never};
+description: {id: "description", value: IPropertyDefinitionSupportedTextType, variant: never};
+behaviour: {id: "behaviour", value: IPropertyDefinitionSupportedTextType, variant: never};
+expertise: {id: "expertise", value: IPropertyDefinitionSupportedTextType, variant: never}
+};
+
+
+const propertiesBaseModAiModSEARCH_MODE_AiIdefAgent = ["SEARCH_name","search","created_by","since","until"] as const;
+const allPropertiesModAiModSEARCH_MODE_AiIdefAgent = (EXTERNALLY_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(STANDARD_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(propertiesBaseModAiModSEARCH_MODE_AiIdefAgent as unknown as string[]);
+interface IPropertiesMemoModAiModSEARCH_MODE_AiIdefAgent extends IPropertiesMemoBase {
+SEARCH_name: IPropertiesMemoProperty<PropertyDefinitionSupportedStringType>;
+search: IPropertiesMemoProperty<PropertyDefinitionSupportedStringType>;
+since: IPropertiesMemoProperty<PropertyDefinitionSupportedDateTimeType>;
+until: IPropertiesMemoProperty<PropertyDefinitionSupportedDateTimeType>
+};
+
+type PropertiesForSettingModAiModSEARCH_MODE_AiIdefAgent = {
+SEARCH_name: {id: "name", value: PropertyDefinitionSupportedStringType, variant: "search"};
+search: {id: "search", value: PropertyDefinitionSupportedStringType, variant: never};
+created_by: {id: "created_by", value: PropertyDefinitionSupportedStringType, variant: never};
+since: {id: "since", value: PropertyDefinitionSupportedDateTimeType, variant: never};
+until: {id: "until", value: PropertyDefinitionSupportedDateTimeType, variant: never}
+};
+
+export interface ItemProviderForModAiIdefAgent extends IItemProviderHookElementNonSearchOnly<typeof propertiesBaseModAiIdefAgent[number]> {properties: IPropertiesMemoModAiIdefAgent};
+export function useModAiIdefAgentItemProvider(options: ICustomItemProviderOptions<typeof propertiesBaseModAiIdefAgent[number], PropertiesForSettingModAiIdefAgent> = {}) {
+
+  const provider = useItemProvider<string, unknown, unknown>({
+    ...options,
+    itemDefinition: "MOD_ai__IDEF_agent",
+    module: "MOD_ai",
+    searchCounterpart: false,
+  });
+
+  const properties = usePropertiesMemoFor<IPropertiesMemoModAiIdefAgent>(allPropertiesModAiIdefAgent, provider);
+
+  return ({
+    ...(provider as IItemProviderHookElementNonSearchOnly<typeof propertiesBaseModAiIdefAgent[number]>),
+    properties,
+  }) as ItemProviderForModAiIdefAgent;
+};
+export function ModAiIdefAgentItemProvider(props: ICustomItemProviderProps<typeof propertiesBaseModAiIdefAgent[number], PropertiesForSettingModAiIdefAgent> = {}) {
+
+  return (<ItemProvider itemDefinition="MOD_ai__IDEF_agent" searchCounterpart={false} {...props}/>);
+};
+export interface ItemProviderForModAiModSEARCH_MODE_AiIdefAgent extends IItemProviderHookElementSearchOnly<typeof propertiesBaseModAiModSEARCH_MODE_AiIdefAgent[number],ModAiIdefAgentClientSideRqType,ModAiIdefAgentFlatRqType> {properties: IPropertiesMemoModAiModSEARCH_MODE_AiIdefAgent};
+export function useModAiIdefAgentSearchItemProvider(options: ICustomItemProviderSearchOptions<typeof propertiesBaseModAiIdefAgent[number], PropertiesForSettingModAiModSEARCH_MODE_AiIdefAgent> = {}) {
+
+  const provider = useItemProvider<string, unknown, unknown>({
+    ...options,
+    itemDefinition: "MOD_ai__IDEF_agent",
+    module: "MOD_ai",
+    searchCounterpart: true,
+  });
+
+  const properties = usePropertiesMemoFor<IPropertiesMemoModAiModSEARCH_MODE_AiIdefAgent>(allPropertiesModAiModSEARCH_MODE_AiIdefAgent, provider);
+
+  return ({
+    ...(provider as IItemProviderHookElementSearchOnly<typeof propertiesBaseModAiModSEARCH_MODE_AiIdefAgent[number],ModAiIdefAgentClientSideRqType,ModAiIdefAgentFlatRqType>),
+    properties,
+  }) as ItemProviderForModAiModSEARCH_MODE_AiIdefAgent;
+};
+export function ModAiIdefAgentSearchItemProvider(props: ICustomItemProviderSearchProps<typeof propertiesBaseModAiIdefAgent[number], PropertiesForSettingModAiModSEARCH_MODE_AiIdefAgent> = {}) {
+
+  return (<ItemProvider itemDefinition="MOD_ai__IDEF_agent" searchCounterpart={true} {...props}/>);
+};

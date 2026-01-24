@@ -11,14 +11,14 @@ import HTMLResourceLoader from "@onzag/itemize/client/components/resources/HTMLR
 export function Contact() {
   return (
     <>
-      <I18nRead id="contact" capitalize={true}>
+      <I18nRead i18nId="contact" capitalize={true}>
         {(i18nContact: string) => (
           <TitleSetter>
             {i18nContact}
           </TitleSetter>
         )}
       </I18nRead>
-      <I18nRead id="contact_url">
+      <I18nRead i18nId="contact_url">
         {(i18nContactURL: string) => (
           <HTMLResourceLoader src={i18nContactURL} />
         )}
