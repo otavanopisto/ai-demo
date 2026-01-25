@@ -569,20 +569,24 @@ export function ModAiSearchItemProvider(props: ICustomItemProviderSearchProps<ty
   return (<ModuleProvider module="MOD_ai"><ItemProvider searchCounterpart={true} {...props}/></ModuleProvider>);
 };
 
-const propertiesBaseModAiIdefAgent = ["name","description","behaviour","expertise"] as const;
+const propertiesBaseModAiIdefAgent = ["name","provider","description","system_prompt","behaviour","expertise"] as const;
 const allPropertiesModAiIdefAgent = (EXTERNALLY_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
   .concat(STANDARD_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
   .concat(propertiesBaseModAiIdefAgent as unknown as string[]);
 interface IPropertiesMemoModAiIdefAgent extends IPropertiesMemoBase {
 name: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>;
+provider: IPropertiesMemoProperty<PropertyDefinitionSupportedStringType>;
 description: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>;
+system_prompt: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>;
 behaviour: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>;
 expertise: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>
 };
 
 type PropertiesForSettingModAiIdefAgent = {
 name: {id: "name", value: IPropertyDefinitionSupportedTextType, variant: never};
+provider: {id: "provider", value: PropertyDefinitionSupportedStringType, variant: never};
 description: {id: "description", value: IPropertyDefinitionSupportedTextType, variant: never};
+system_prompt: {id: "system_prompt", value: IPropertyDefinitionSupportedTextType, variant: never};
 behaviour: {id: "behaviour", value: IPropertyDefinitionSupportedTextType, variant: never};
 expertise: {id: "expertise", value: IPropertyDefinitionSupportedTextType, variant: never}
 };
@@ -648,4 +652,199 @@ export function useModAiIdefAgentSearchItemProvider(options: ICustomItemProvider
 export function ModAiIdefAgentSearchItemProvider(props: ICustomItemProviderSearchProps<typeof propertiesBaseModAiIdefAgent[number], PropertiesForSettingModAiModSEARCH_MODE_AiIdefAgent> = {}) {
 
   return (<ItemProvider itemDefinition="MOD_ai__IDEF_agent" searchCounterpart={true} {...props}/>);
+};
+
+const propertiesBaseModThreadIdefThread_PROPEXT_IDEF = [] as const;
+
+type PropertiesForSettingModThreadIdefThread_PROPEXT_IDEF = {
+
+};
+
+
+const propertiesBaseModThreadModSEARCH_MODE_ThreadIdefSEARCH_MODE_Thread_PROPEXT_IDEF = [] as const;
+const allPropertiesModThreadModSEARCH_MODE_ThreadIdefSEARCH_MODE_Thread_PROPEXT_IDEF = (EXTERNALLY_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(STANDARD_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(propertiesBaseModThreadModSEARCH_MODE_ThreadIdefSEARCH_MODE_Thread_PROPEXT_IDEF as unknown as string[]);
+interface IPropertiesMemoModThreadModSEARCH_MODE_ThreadIdefSEARCH_MODE_Thread_PROPEXT_IDEF extends IPropertiesMemoBase {
+
+};
+
+type PropertiesForSettingModThreadModSEARCH_MODE_ThreadIdefSEARCH_MODE_Thread_PROPEXT_IDEF = {
+
+};
+
+export interface ItemProviderForModThreadModSEARCH_MODE_ThreadIdefSEARCH_MODE_Thread_PROPEXT_IDEF extends IItemProviderHookElementSearchOnly<typeof propertiesBaseModThreadModSEARCH_MODE_ThreadIdefSEARCH_MODE_Thread_PROPEXT_IDEF[number],ModThreadClientSideRqType,ModThreadFlatRqType> {properties: IPropertiesMemoModThreadModSEARCH_MODE_ThreadIdefSEARCH_MODE_Thread_PROPEXT_IDEF};
+export function useModThreadSearchItemProvider(options: ICustomItemProviderSearchOptions<typeof propertiesBaseModThreadIdefThread_PROPEXT_IDEF[number], PropertiesForSettingModThreadIdefThread_PROPEXT_IDEF> = {}) {
+
+  const provider = useItemProvider<string, unknown, unknown>({
+    ...options,
+    itemDefinition: null,
+    module: "MOD_thread",
+    searchCounterpart: true,
+  });
+
+  const properties = usePropertiesMemoFor<IPropertiesMemoModThreadModSEARCH_MODE_ThreadIdefSEARCH_MODE_Thread_PROPEXT_IDEF>(allPropertiesModThreadModSEARCH_MODE_ThreadIdefSEARCH_MODE_Thread_PROPEXT_IDEF, provider);
+
+  return ({
+    ...(provider as IItemProviderHookElementSearchOnly<typeof propertiesBaseModThreadModSEARCH_MODE_ThreadIdefSEARCH_MODE_Thread_PROPEXT_IDEF[number],ModThreadClientSideRqType,ModThreadFlatRqType>),
+    properties,
+  }) as ItemProviderForModThreadModSEARCH_MODE_ThreadIdefSEARCH_MODE_Thread_PROPEXT_IDEF;
+};
+export function ModThreadSearchItemProvider(props: ICustomItemProviderSearchProps<typeof propertiesBaseModThreadIdefThread_PROPEXT_IDEF[number], PropertiesForSettingModThreadModSEARCH_MODE_ThreadIdefSEARCH_MODE_Thread_PROPEXT_IDEF> = {}) {
+
+  return (<ModuleProvider module="MOD_thread"><ItemProvider searchCounterpart={true} {...props}/></ModuleProvider>);
+};
+
+const propertiesBaseModThreadIdefThread = ["title"] as const;
+const allPropertiesModThreadIdefThread = (EXTERNALLY_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(STANDARD_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(propertiesBaseModThreadIdefThread as unknown as string[]);
+interface IPropertiesMemoModThreadIdefThread extends IPropertiesMemoBase {
+title: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>
+};
+
+type PropertiesForSettingModThreadIdefThread = {
+title: {id: "title", value: IPropertyDefinitionSupportedTextType, variant: never}
+};
+
+
+const propertiesBaseModThreadModSEARCH_MODE_ThreadIdefThread = ["SEARCH_title","search","created_by","since","until"] as const;
+const allPropertiesModThreadModSEARCH_MODE_ThreadIdefThread = (EXTERNALLY_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(STANDARD_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(propertiesBaseModThreadModSEARCH_MODE_ThreadIdefThread as unknown as string[]);
+interface IPropertiesMemoModThreadModSEARCH_MODE_ThreadIdefThread extends IPropertiesMemoBase {
+SEARCH_title: IPropertiesMemoProperty<PropertyDefinitionSupportedStringType>;
+search: IPropertiesMemoProperty<PropertyDefinitionSupportedStringType>;
+since: IPropertiesMemoProperty<PropertyDefinitionSupportedDateTimeType>;
+until: IPropertiesMemoProperty<PropertyDefinitionSupportedDateTimeType>
+};
+
+type PropertiesForSettingModThreadModSEARCH_MODE_ThreadIdefThread = {
+SEARCH_title: {id: "title", value: PropertyDefinitionSupportedStringType, variant: "search"};
+search: {id: "search", value: PropertyDefinitionSupportedStringType, variant: never};
+created_by: {id: "created_by", value: PropertyDefinitionSupportedStringType, variant: never};
+since: {id: "since", value: PropertyDefinitionSupportedDateTimeType, variant: never};
+until: {id: "until", value: PropertyDefinitionSupportedDateTimeType, variant: never}
+};
+
+export interface ItemProviderForModThreadIdefThread extends IItemProviderHookElementNonSearchOnly<typeof propertiesBaseModThreadIdefThread[number]> {properties: IPropertiesMemoModThreadIdefThread};
+export function useModThreadIdefThreadItemProvider(options: ICustomItemProviderOptions<typeof propertiesBaseModThreadIdefThread[number], PropertiesForSettingModThreadIdefThread> = {}) {
+
+  const provider = useItemProvider<string, unknown, unknown>({
+    ...options,
+    itemDefinition: "MOD_thread__IDEF_thread",
+    module: "MOD_thread",
+    searchCounterpart: false,
+  });
+
+  const properties = usePropertiesMemoFor<IPropertiesMemoModThreadIdefThread>(allPropertiesModThreadIdefThread, provider);
+
+  return ({
+    ...(provider as IItemProviderHookElementNonSearchOnly<typeof propertiesBaseModThreadIdefThread[number]>),
+    properties,
+  }) as ItemProviderForModThreadIdefThread;
+};
+export function ModThreadIdefThreadItemProvider(props: ICustomItemProviderProps<typeof propertiesBaseModThreadIdefThread[number], PropertiesForSettingModThreadIdefThread> = {}) {
+
+  return (<ItemProvider itemDefinition="MOD_thread__IDEF_thread" searchCounterpart={false} {...props}/>);
+};
+export interface ItemProviderForModThreadModSEARCH_MODE_ThreadIdefThread extends IItemProviderHookElementSearchOnly<typeof propertiesBaseModThreadModSEARCH_MODE_ThreadIdefThread[number],ModThreadIdefThreadClientSideRqType,ModThreadIdefThreadFlatRqType> {properties: IPropertiesMemoModThreadModSEARCH_MODE_ThreadIdefThread};
+export function useModThreadIdefThreadSearchItemProvider(options: ICustomItemProviderSearchOptions<typeof propertiesBaseModThreadIdefThread[number], PropertiesForSettingModThreadModSEARCH_MODE_ThreadIdefThread> = {}) {
+
+  const provider = useItemProvider<string, unknown, unknown>({
+    ...options,
+    itemDefinition: "MOD_thread__IDEF_thread",
+    module: "MOD_thread",
+    searchCounterpart: true,
+  });
+
+  const properties = usePropertiesMemoFor<IPropertiesMemoModThreadModSEARCH_MODE_ThreadIdefThread>(allPropertiesModThreadModSEARCH_MODE_ThreadIdefThread, provider);
+
+  return ({
+    ...(provider as IItemProviderHookElementSearchOnly<typeof propertiesBaseModThreadModSEARCH_MODE_ThreadIdefThread[number],ModThreadIdefThreadClientSideRqType,ModThreadIdefThreadFlatRqType>),
+    properties,
+  }) as ItemProviderForModThreadModSEARCH_MODE_ThreadIdefThread;
+};
+export function ModThreadIdefThreadSearchItemProvider(props: ICustomItemProviderSearchProps<typeof propertiesBaseModThreadIdefThread[number], PropertiesForSettingModThreadModSEARCH_MODE_ThreadIdefThread> = {}) {
+
+  return (<ItemProvider itemDefinition="MOD_thread__IDEF_thread" searchCounterpart={true} {...props}/>);
+};
+
+const propertiesBaseModThreadIdefMessage = ["role","content"] as const;
+const allPropertiesModThreadIdefMessage = (EXTERNALLY_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(STANDARD_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(propertiesBaseModThreadIdefMessage as unknown as string[]);
+interface IPropertiesMemoModThreadIdefMessage extends IPropertiesMemoBase {
+role: IPropertiesMemoProperty<PropertyDefinitionSupportedStringType>;
+content: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>
+};
+
+type PropertiesForSettingModThreadIdefMessage = {
+role: {id: "role", value: PropertyDefinitionSupportedStringType, variant: never};
+content: {id: "content", value: IPropertyDefinitionSupportedTextType, variant: never}
+};
+
+
+const propertiesBaseModThreadModSEARCH_MODE_ThreadIdefMessage = ["SEARCH_role","IN_role","search","created_by","since","until"] as const;
+const allPropertiesModThreadModSEARCH_MODE_ThreadIdefMessage = (EXTERNALLY_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(STANDARD_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(propertiesBaseModThreadModSEARCH_MODE_ThreadIdefMessage as unknown as string[]);
+interface IPropertiesMemoModThreadModSEARCH_MODE_ThreadIdefMessage extends IPropertiesMemoBase {
+SEARCH_role: IPropertiesMemoProperty<PropertyDefinitionSupportedStringType>;
+IN_role: IPropertiesMemoProperty<PropertyDefinitionSupportedTagListType>;
+search: IPropertiesMemoProperty<PropertyDefinitionSupportedStringType>;
+since: IPropertiesMemoProperty<PropertyDefinitionSupportedDateTimeType>;
+until: IPropertiesMemoProperty<PropertyDefinitionSupportedDateTimeType>
+};
+
+type PropertiesForSettingModThreadModSEARCH_MODE_ThreadIdefMessage = {
+SEARCH_role: {id: "role", value: PropertyDefinitionSupportedStringType, variant: "search"};
+IN_role: {id: "role", value: PropertyDefinitionSupportedTagListType, variant: "in"};
+search: {id: "search", value: PropertyDefinitionSupportedStringType, variant: never};
+created_by: {id: "created_by", value: PropertyDefinitionSupportedStringType, variant: never};
+since: {id: "since", value: PropertyDefinitionSupportedDateTimeType, variant: never};
+until: {id: "until", value: PropertyDefinitionSupportedDateTimeType, variant: never}
+};
+
+export interface ItemProviderForModThreadIdefMessage extends IItemProviderHookElementNonSearchOnly<typeof propertiesBaseModThreadIdefMessage[number]> {properties: IPropertiesMemoModThreadIdefMessage};
+export function useModThreadIdefMessageItemProvider(options: ICustomItemProviderOptions<typeof propertiesBaseModThreadIdefMessage[number], PropertiesForSettingModThreadIdefMessage> = {}) {
+
+  const provider = useItemProvider<string, unknown, unknown>({
+    ...options,
+    itemDefinition: "MOD_thread__IDEF_message",
+    module: "MOD_thread",
+    searchCounterpart: false,
+  });
+
+  const properties = usePropertiesMemoFor<IPropertiesMemoModThreadIdefMessage>(allPropertiesModThreadIdefMessage, provider);
+
+  return ({
+    ...(provider as IItemProviderHookElementNonSearchOnly<typeof propertiesBaseModThreadIdefMessage[number]>),
+    properties,
+  }) as ItemProviderForModThreadIdefMessage;
+};
+export function ModThreadIdefMessageItemProvider(props: ICustomItemProviderProps<typeof propertiesBaseModThreadIdefMessage[number], PropertiesForSettingModThreadIdefMessage> = {}) {
+
+  return (<ItemProvider itemDefinition="MOD_thread__IDEF_message" searchCounterpart={false} {...props}/>);
+};
+export interface ItemProviderForModThreadModSEARCH_MODE_ThreadIdefMessage extends IItemProviderHookElementSearchOnly<typeof propertiesBaseModThreadModSEARCH_MODE_ThreadIdefMessage[number],ModThreadIdefMessageClientSideRqType,ModThreadIdefMessageFlatRqType> {properties: IPropertiesMemoModThreadModSEARCH_MODE_ThreadIdefMessage};
+export function useModThreadIdefMessageSearchItemProvider(options: ICustomItemProviderSearchOptions<typeof propertiesBaseModThreadIdefMessage[number], PropertiesForSettingModThreadModSEARCH_MODE_ThreadIdefMessage> = {}) {
+
+  const provider = useItemProvider<string, unknown, unknown>({
+    ...options,
+    itemDefinition: "MOD_thread__IDEF_message",
+    module: "MOD_thread",
+    searchCounterpart: true,
+  });
+
+  const properties = usePropertiesMemoFor<IPropertiesMemoModThreadModSEARCH_MODE_ThreadIdefMessage>(allPropertiesModThreadModSEARCH_MODE_ThreadIdefMessage, provider);
+
+  return ({
+    ...(provider as IItemProviderHookElementSearchOnly<typeof propertiesBaseModThreadModSEARCH_MODE_ThreadIdefMessage[number],ModThreadIdefMessageClientSideRqType,ModThreadIdefMessageFlatRqType>),
+    properties,
+  }) as ItemProviderForModThreadModSEARCH_MODE_ThreadIdefMessage;
+};
+export function ModThreadIdefMessageSearchItemProvider(props: ICustomItemProviderSearchProps<typeof propertiesBaseModThreadIdefMessage[number], PropertiesForSettingModThreadModSEARCH_MODE_ThreadIdefMessage> = {}) {
+
+  return (<ItemProvider itemDefinition="MOD_thread__IDEF_message" searchCounterpart={true} {...props}/>);
 };

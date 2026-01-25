@@ -1,0 +1,7 @@
+{
+    "type": "module",
+    "children": ["thread", "message"],
+    "searchable": true,
+    "maxSearchResults": 1000,
+    "maxSearchRecords": 1000
+}

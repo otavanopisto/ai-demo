@@ -1,4 +1,4 @@
-import { initializeServer } from "@onzag/itemize/server";
+import { app, initializeServer } from "@onzag/itemize/server";
 import { localeReplacer } from "@onzag/itemize/util";
 import {
   genericAnalyticsDataValidator,
@@ -58,6 +58,11 @@ initializeServer(
           itemOrModule: "users/user",
         },
       },
+    },
+    customRouterEndpoint: "/api",
+    customRouter: (appData) => {
+      const newRouter = appData.express.Router();
+      return newRouter;
     },
     analytics: {
       // feel free to add many other metrics

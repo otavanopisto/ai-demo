@@ -7,7 +7,19 @@
             "unique": true
         },
         {
+            "id": "provider",
+            "type": "string",
+            "values": ["chatgpt", "claude", "gemini"],
+            "searchable": false
+        },
+        {
             "id": "description",
+            "type": "text",
+            "subtype": "plain",
+            "searchable": false
+        },
+        {
+            "id": "system_prompt",
             "type": "text",
             "subtype": "plain",
             "searchable": false
@@ -25,8 +37,11 @@
             "searchable": false
         }
     ],
-    "createRoleAccess": ["&ANYONE_LOGGED"],
+    "createRoleAccess": ["TEACHER", "ADMIN"],
     "readRoleAccess": ["&ANYONE_LOGGED"],
-    "editRoleAccess": ["&OWNER", "TEACHER"],
-    "deleteRoleAccess": ["&OWNER", "TEACHER"]
+    "editRoleAccess": ["&OWNER", "TEACHER", "ADMIN"],
+    "deleteRoleAccess": ["&OWNER", "TEACHER", "ADMIN"],
+    "parentingRoleAccess": {
+        "thread/thread": ["&ANYONE_LOGGED"]
+    }
 }

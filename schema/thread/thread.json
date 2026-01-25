@@ -1,0 +1,24 @@
+{
+    "type": "item",
+    "properties": [
+        {
+            "id": "title",
+            "type": "text",
+            "nullable": true
+        }
+    ],
+    "createRoleAccess": ["&ANYONE_LOGGED"],
+    "readRoleAccess": ["&OWNER", "TEACHER", "ADMIN"],
+    "editRoleAccess": [],
+    "deleteRoleAccess": ["&OWNER", "TEACHER", "ADMIN"],
+    "mustBeParented": true,
+    "canBeParentedBy": [
+        {
+            "module": "ai",
+            "item": "agent"
+        }
+    ],
+    "parentingRoleAccess": {
+        "thread/message": ["&OWNER"]
+    }
+}
