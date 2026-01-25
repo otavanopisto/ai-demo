@@ -1,0 +1,26 @@
+{
+    "type": "item",
+    "properties": [
+        {
+            "id": "role",
+            "type": "string"
+        },
+        {
+            "id": "content",
+            "type": "text",
+            "subtype": "plain",
+            "searchable": false
+        }
+    ],
+    "createRoleAccess": ["&ANYONE_LOGGED"],
+    "readRoleAccess": ["&OWNER", "TEACHER", "ADMIN"],
+    "editRoleAccess": [],
+    "deleteRoleAccess": ["&OWNER", "TEACHER", "ADMIN"],
+    "mustBeParented": true,
+    "canBeParentedBy": [
+        {
+            "module": "thread",
+            "item": "thread"
+        }
+    ]
+}

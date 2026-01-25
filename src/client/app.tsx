@@ -33,6 +33,8 @@ import { AltSectionScroller } from "@onzag/itemize/client/fast-prototyping/compo
 // analytics track for page and page_offline track
 import PageTimetrack from "@onzag/itemize/client/components/analytics/PageTimetrack";
 
+import Ai from "./pages/ai";
+
 /**
  * The default admin entries
  */
@@ -118,6 +120,8 @@ export default function App() {
       <Route path="/privacy-policy" component={PrivacyPolicy}/>
       <Route path="/terms-and-conditions" component={TermsAndConditions}/>
       <Route path="/contact" component={Contact}/>
+
+      <Route path="/ai" component={Ai} />
 
       <Footer/>
 

@@ -5,7 +5,8 @@
     "flag",
     "cms",
     "mail",
-    "ai"
+    "ai",
+    "thread"
   ],
   "i18n": "main-i18n.properties"
 }

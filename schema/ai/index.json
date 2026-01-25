@@ -1,5 +1,7 @@
 {
     "type": "module",
     "children": ["agent"],
-    "searchable": true
+    "searchable": true,
+    "maxSearchResults": 100,
+    "maxSearchRecords": 100
 }
