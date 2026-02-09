@@ -12,7 +12,7 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { useUserDataRetriever } from "@onzag/itemize/client/components/user/UserDataRetriever";
 import { useItemProvider } from "@onzag/itemize/client/providers/item/hook";
-import { useModAiIdefAgentSearchItemProvider } from "src/schema";
+import { useModAiIdefAgentSearchItemProvider } from "../../../schema";
 import { Card } from "@mui/material";
 import { ItemProvider } from "@onzag/itemize/client/providers/item";
 import View from "@onzag/itemize/client/components/property/View";

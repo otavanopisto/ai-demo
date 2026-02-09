@@ -1,7 +1,7 @@
 
 import React, { useCallback } from "react";
 import Route from "@onzag/itemize/client/components/navigation/Route";
-import { useModAiIdefAgentItemProvider, useModThreadIdefMessageItemProvider, useModThreadIdefMessageSearchItemProvider, useModThreadIdefThreadItemProvider, useModThreadIdefThreadSearchItemProvider } from "src/schema";
+import { useModAiIdefAgentItemProvider, useModThreadIdefMessageItemProvider, useModThreadIdefMessageSearchItemProvider, useModThreadIdefThreadItemProvider, useModThreadIdefThreadSearchItemProvider } from "../../../schema";
 import { Box, Button } from "@mui/material";
 import I18nRead from "@onzag/itemize/client/components/localization/I18nRead";
 import I18nReadError from "@onzag/itemize/client/components/localization/I18nReadError";

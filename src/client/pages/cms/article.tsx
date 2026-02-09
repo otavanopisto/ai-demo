@@ -117,7 +117,7 @@ function ArticleIndex() {
                   <>
                     {arg.searchRecords.map((r) => {
                       return (
-                        <ItemProvider {...r.providerProps}>
+                        <ItemProvider {...r.providerArgs} key={r.id}>
                           <Link to={"/cms/article/" + r.id} key={r.id}>
                             <ListItem sx={style.listItem}>
                               <ListItemIcon>
