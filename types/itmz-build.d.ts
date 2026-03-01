@@ -1235,3 +1235,143 @@ interface ModThreadIdefOnlyMessageSQLType {
 
 interface ModThreadIdefMessageSQLType extends ModThreadSQLType, ModThreadIdefOnlyMessageSQLType {};
 
+interface ModPermissioncardFlatRqType {
+	/**The id of the item*/
+	id: string;
+	/**An optional version of the item, the item must have versioning enabled*/
+	version?: string;
+	/**The type (qualified name) of the item*/
+	type: ("MOD_permissioncard__IDEF_request");
+	/**If exists, a parent id of this item*/
+	parent_id?: string;
+	/**If exists, the parent version of this item*/
+	parent_version?: string;
+	/**If exists, a parent type of this item*/
+	parent_type?: string;
+	/**When the item was created*/
+	created_at?: string;
+	/**The id of the user who created this item*/
+	created_by?: string;
+	/**Whenever the item was modified, otherwise null*/
+	edited_at?: string;
+	/**Whoever modified this item, otherwise null*/
+	edited_by?: string;
+	/**When a moderator or admin reviewed this item*/
+	reviewed_at?: string;
+	/**The user id who reviewed it*/
+	reviewed_by?: string;
+
+	/**An internal variable that represents when the whole item, as a whole  was last modified, by any factor, edited_at servers a UI purpose when things were  modified by normal means whereas last_modified is a global factor, it could be the  server that did the change, or a side effect, edited_at can be used in the UI  last modified is for usage which checking if items updated*/
+	last_modified?: string;
+	/**When the item was blocked, blocked items are not searchable or retrievable by normal means; if you as an user own this item, you will only see it blocked, unlike deleted items, blocked items remain in the database until they are manually removed by an admin or moderator, none can access the data of this item, the API will null all the fields, with the exception of blocked_at, blocked_by, blocked_until and blocked_reason*/
+	blocked_at?: string;
+	/**Basically makes the block be temporary and will be automatically lifted by the database*/
+	blocked_until?: string;
+	/**By whom it was blocked*/
+	blocked_by?: string;
+	/**A written text of why it was blocked*/
+	blocked_reason?: string;
+}
+
+interface ModPermissioncardClientSideRqType {
+	/**The id of the item*/
+	id: string;
+	/**An optional version of the item, the item must have versioning enabled*/
+	version?: string;
+	/**The type (qualified name) of the item*/
+	type: ("MOD_permissioncard__IDEF_request");
+	DATA?: {
+		/**If exists, a parent id of this item*/
+		parent_id?: string;
+		/**If exists, the parent version of this item*/
+		parent_version?: string;
+		/**If exists, a parent type of this item*/
+		parent_type?: string;
+		/**When the item was created*/
+		created_at?: string;
+		/**The id of the user who created this item*/
+		created_by?: string;
+		/**Whenever the item was modified, otherwise null*/
+		edited_at?: string;
+		/**Whoever modified this item, otherwise null*/
+		edited_by?: string;
+		/**When a moderator or admin reviewed this item*/
+		reviewed_at?: string;
+		/**The user id who reviewed it*/
+		reviewed_by?: string;
+	};
+	/**An internal variable that represents when the whole item, as a whole  was last modified, by any factor, edited_at servers a UI purpose when things were  modified by normal means whereas last_modified is a global factor, it could be the  server that did the change, or a side effect, edited_at can be used in the UI  last modified is for usage which checking if items updated*/
+	last_modified?: string;
+	/**When the item was blocked, blocked items are not searchable or retrievable by normal means; if you as an user own this item, you will only see it blocked, unlike deleted items, blocked items remain in the database until they are manually removed by an admin or moderator, none can access the data of this item, the API will null all the fields, with the exception of blocked_at, blocked_by, blocked_until and blocked_reason*/
+	blocked_at?: string;
+	/**Basically makes the block be temporary and will be automatically lifted by the database*/
+	blocked_until?: string;
+	/**By whom it was blocked*/
+	blocked_by?: string;
+	/**A written text of why it was blocked*/
+	blocked_reason?: string;
+}
+
+interface ModPermissioncardSQLType {
+	/**The id of the item*/
+	id: string;
+	/**An optional version of the item, the item must have versioning enabled*/
+	version?: string;
+	/**The type (qualified name) of the item*/
+	type: ("MOD_permissioncard__IDEF_request");
+	parent_id?: string;
+	parent_version?: string;
+	parent_type?: string;
+	created_at: string;
+	created_by: string;
+	edited_at?: string;
+	edited_by?: string;
+	reviewed_at?: string;
+	reviewed_by?: string;
+	/**An internal variable that represents when the whole item, as a whole  was last modified, by any factor, edited_at servers a UI purpose when things were  modified by normal means whereas last_modified is a global factor, it could be the  server that did the change, or a side effect, edited_at can be used in the UI  last modified is for usage which checking if items updated*/
+	last_modified?: string;
+	/**When the item was blocked, blocked items are not searchable or retrievable by normal means; if you as an user own this item, you will only see it blocked, unlike deleted items, blocked items remain in the database until they are manually removed by an admin or moderator, none can access the data of this item, the API will null all the fields, with the exception of blocked_at, blocked_by, blocked_until and blocked_reason*/
+	blocked_at?: string;
+	/**Basically makes the block be temporary and will be automatically lifted by the database*/
+	blocked_until?: string;
+	/**By whom it was blocked*/
+	blocked_by?: string;
+	/**A written text of why it was blocked*/
+	blocked_reason?: string;
+}
+
+interface ModPermissioncardIdefRequestFlatRqType extends ModPermissioncardFlatRqType {
+	/**Message to reviewer - CREATE ACCESS: &ANYONE - READ ACCESS: &ANYONE - EDIT ACCESS: &ANYONE - */
+	message: {
+		value?: string;
+		language?: string;
+	};
+	/**Approve this user to access the AI demo - CREATE ACCESS: TEACHER, ADMIN - READ ACCESS: &ANYONE - EDIT ACCESS: TEACHER, ADMIN - */
+	approved?: boolean;
+}
+
+interface ModPermissioncardIdefRequestClientSideRqType extends ModPermissioncardClientSideRqType {
+	DATA?: ModPermissioncardClientSideRqType["DATA"] & {
+		/**Message to reviewer - CREATE ACCESS: &ANYONE - READ ACCESS: &ANYONE - EDIT ACCESS: &ANYONE - */
+		message: {
+			value?: string;
+			language?: string;
+		};
+		/**Approve this user to access the AI demo - CREATE ACCESS: TEACHER, ADMIN - READ ACCESS: &ANYONE - EDIT ACCESS: TEACHER, ADMIN - */
+		approved?: boolean;
+	};
+}
+
+interface ModPermissioncardIdefOnlyRequestSQLType {
+	MODULE_ID: string;
+	MODULE_VERSION: string;
+	message?: string;
+	message_PLAIN?: string;
+	message_DICTIONARY?: any;
+	message_LANGUAGE?: string;
+	message_VECTOR?: string;
+	approved?: boolean;
+}
+
+interface ModPermissioncardIdefRequestSQLType extends ModPermissioncardSQLType, ModPermissioncardIdefOnlyRequestSQLType {};
+

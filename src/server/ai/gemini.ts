@@ -8,6 +8,7 @@ export default async function processThreadWithGemini(
     threadMessages: ModThreadIdefMessageSQLType[],
     appData: IAppDataType,
     client: GoogleGenAI,
+    model: string,
 ) {
 
     if (threadMessages.length === 2) {
@@ -16,7 +17,7 @@ export default async function processThreadWithGemini(
         if (firstUserMessage) {
             const newSystemPrompt = `You are an assistant that helps determine the name of a conversation thread based on the first user message. The assistant is described as "${agent.name}: ${agent.description}". The message is at follows:\n\n"${firstUserMessage?.content}".\n\nBased on this message, provide a concise and descriptive name for the thread in 10 words or less. The name should capture the essence of the user's message and the agent's expertise.`;
             const nameResponse = await client.models.generateContent({
-                model: 'gemini-2.5-flash',
+                model: "gemini-2.5-flash",
                 contents: [
                     {
                         // @ts-ignore typescript is wrong
@@ -39,7 +40,7 @@ export default async function processThreadWithGemini(
     }
 
     const response = await client.models.generateContentStream({
-        model: 'gemini-2.5-flash',
+        model,
         contents: threadMessages.map((m) => ({
             role: m.role === "system" ? "user" : (m.role === "user" ? "user" : "model"),
             text: m.content,

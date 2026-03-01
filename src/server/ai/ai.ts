@@ -97,10 +97,12 @@ async function queueAICompletitionOnThread(threadId: string, appData: IAppDataTy
             },
         });
 
-        if (agent.provider === "chatgpt") {
-            await processThreadWithOpenAI(threadValue, emptyNewThreadMessage, agent, threadMessages, appData, service.openAIClient);
-        } else if (agent.provider === "gemini") {
-            await processThreadWithGemini(threadValue, emptyNewThreadMessage, agent, threadMessages, appData, service.geminiClient);
+        if (agent.provider.startsWith("chatgpt")) {
+            const model = agent.provider.replace("chatgpt_", "");
+            await processThreadWithOpenAI(threadValue, emptyNewThreadMessage, agent, threadMessages, appData, service.openAIClient, model);
+        } else if (agent.provider.startsWith("gemini")) {
+            const model = agent.provider.replace("gemini_", "");
+            await processThreadWithGemini(threadValue, emptyNewThreadMessage, agent, threadMessages, appData, service.geminiClient, model);
         }
     } catch (error) {
         console.error("Error processing AI completition:", error);
@@ -203,15 +205,11 @@ export default class AIService extends ServiceProvider<IAIServiceConfig> {
                         if (ctx.action === IOTriggerActions.CREATED) {
                             const threadId = ctx.requestedUpdateParent.id;
                             const content = ctx.requestedUpdate.content as any as IPropertyDefinitionSupportedTextType;
-                            console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                            console.log(content);
-                            console.log(this.config);
                             await queueAICompletitionOnThread(
                                 threadId,
                                 this.localAppData,
                                 this,
                             );
-                            console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                         }
 
                         return null;

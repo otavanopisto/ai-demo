@@ -8,13 +8,60 @@ export default async function processThreadWithOpenAI(
     threadMessages: ModThreadIdefMessageSQLType[],
     appData: IAppDataType,
     client: OpenAI,
+    model: string,
 ) {
+    if (threadMessages.length === 2) {
+        // figure out a name for the thread based on the first user message
+        const firstUserMessage = threadMessages.find((m) => m.role === "user");
+        if (firstUserMessage) {
+            const newSystemPrompt = `You are an assistant that helps determine the name of a conversation thread based on the first user message. The assistant is described as "${agent.name}: ${agent.description}". The message is at follows:\n\n"${firstUserMessage?.content}".\n\nBased on this message, provide a concise and descriptive name for the thread in 10 words or less. The name should capture the essence of the user's message and the agent's expertise.`;
+            const nameResponse = await client.responses.create({
+                model: "gpt-3.5-turbo",
+                input: [
+                    {
+                        // @ts-ignore typescript is wrong
+                        role: "user",
+                        content: newSystemPrompt,
+                    },
+                ],
+            });
+            await appData.cache.requestUpdate<ModThreadIdefThreadSQLType>("thread/thread", thread.id, thread.version, {
+                title: {
+                    value: nameResponse.output_text,
+                    language: thread.title_LANGUAGE || "en",
+                }
+            }, {
+                dictionary: "english",
+                language: "en",
+                currentSQLValue: thread,
+            });
+        }
+    }
+
     const response = await client.responses.create({
         input: threadMessages.map((m) => ({
             role: m.role as any,
             content: m.content,
         })),
-        model: "gpt-3.5-turbo",
+        model,
+        stream: true,
     });
-    console.log(response);
+
+    let isFirstChunk = true;
+    for await (const event of response) {
+        if (event.type === "response.output_text.delta") {
+            const text = event.delta;
+            threadMessage = await appData.cache.requestUpdate<ModThreadIdefMessageSQLType>("thread/message", threadMessage.id, threadMessage.version, {
+                content: {
+                    value: isFirstChunk ? text : (threadMessage.content || "") + text,
+                    language: threadMessage.content_LANGUAGE || "en",
+                }
+            }, {
+                dictionary: "english",
+                language: "en",
+                currentSQLValue: threadMessage,
+            });
+            isFirstChunk = false;
+        }
+    }
 }

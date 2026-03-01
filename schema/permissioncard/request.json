@@ -1,0 +1,25 @@
+{
+    "type": "item",
+    "properties": [
+        {
+            "id": "message",
+            "type": "text",
+            "subtype": "plain",
+            "searchable": false
+        },
+        {
+            "id": "approved",
+            "type": "boolean",
+            "searchable": false,
+            "default": false,
+            "nullable": true,
+            "createRoleAccess": ["TEACHER", "ADMIN"],
+            "editRoleAccess": ["TEACHER", "ADMIN"],
+            "coerceNullsIntoDefaultAfterSubmit": true
+        }
+    ],
+    "createRoleAccess": ["&ANYONE_LOGGED"],
+    "readRoleAccess": ["&OWNER", "TEACHER", "ADMIN"],
+    "editRoleAccess": ["&OWNER", "TEACHER", "ADMIN"],
+    "deleteRoleAccess": ["&OWNER", "TEACHER", "ADMIN"]
+}

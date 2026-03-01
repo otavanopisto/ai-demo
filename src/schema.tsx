@@ -848,3 +848,119 @@ export function ModThreadIdefMessageSearchItemProvider(props: ICustomItemProvide
 
   return (<ItemProvider itemDefinition="MOD_thread__IDEF_message" searchCounterpart={true} {...props}/>);
 };
+
+const propertiesBaseModPermissioncardIdefPermissioncard_PROPEXT_IDEF = [] as const;
+
+type PropertiesForSettingModPermissioncardIdefPermissioncard_PROPEXT_IDEF = {
+
+};
+
+
+const propertiesBaseModPermissioncardModSEARCH_MODE_PermissioncardIdefSEARCH_MODE_Permissioncard_PROPEXT_IDEF = [] as const;
+const allPropertiesModPermissioncardModSEARCH_MODE_PermissioncardIdefSEARCH_MODE_Permissioncard_PROPEXT_IDEF = (EXTERNALLY_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(STANDARD_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(propertiesBaseModPermissioncardModSEARCH_MODE_PermissioncardIdefSEARCH_MODE_Permissioncard_PROPEXT_IDEF as unknown as string[]);
+interface IPropertiesMemoModPermissioncardModSEARCH_MODE_PermissioncardIdefSEARCH_MODE_Permissioncard_PROPEXT_IDEF extends IPropertiesMemoBase {
+
+};
+
+type PropertiesForSettingModPermissioncardModSEARCH_MODE_PermissioncardIdefSEARCH_MODE_Permissioncard_PROPEXT_IDEF = {
+
+};
+
+export interface ItemProviderForModPermissioncardModSEARCH_MODE_PermissioncardIdefSEARCH_MODE_Permissioncard_PROPEXT_IDEF extends IItemProviderHookElementSearchOnly<typeof propertiesBaseModPermissioncardModSEARCH_MODE_PermissioncardIdefSEARCH_MODE_Permissioncard_PROPEXT_IDEF[number],ModPermissioncardClientSideRqType,ModPermissioncardFlatRqType> {properties: IPropertiesMemoModPermissioncardModSEARCH_MODE_PermissioncardIdefSEARCH_MODE_Permissioncard_PROPEXT_IDEF};
+export function useModPermissioncardSearchItemProvider(options: ICustomItemProviderSearchOptions<typeof propertiesBaseModPermissioncardIdefPermissioncard_PROPEXT_IDEF[number], PropertiesForSettingModPermissioncardIdefPermissioncard_PROPEXT_IDEF> = {}) {
+
+  const provider = useItemProvider<string, unknown, unknown>({
+    ...options,
+    itemDefinition: null,
+    module: "MOD_permissioncard",
+    searchCounterpart: true,
+  });
+
+  const properties = usePropertiesMemoFor<IPropertiesMemoModPermissioncardModSEARCH_MODE_PermissioncardIdefSEARCH_MODE_Permissioncard_PROPEXT_IDEF>(allPropertiesModPermissioncardModSEARCH_MODE_PermissioncardIdefSEARCH_MODE_Permissioncard_PROPEXT_IDEF, provider);
+
+  return ({
+    ...(provider as IItemProviderHookElementSearchOnly<typeof propertiesBaseModPermissioncardModSEARCH_MODE_PermissioncardIdefSEARCH_MODE_Permissioncard_PROPEXT_IDEF[number],ModPermissioncardClientSideRqType,ModPermissioncardFlatRqType>),
+    properties,
+  }) as ItemProviderForModPermissioncardModSEARCH_MODE_PermissioncardIdefSEARCH_MODE_Permissioncard_PROPEXT_IDEF;
+};
+export function ModPermissioncardSearchItemProvider(props: ICustomItemProviderSearchProps<typeof propertiesBaseModPermissioncardIdefPermissioncard_PROPEXT_IDEF[number], PropertiesForSettingModPermissioncardModSEARCH_MODE_PermissioncardIdefSEARCH_MODE_Permissioncard_PROPEXT_IDEF> = {}) {
+
+  return (<ModuleProvider module="MOD_permissioncard"><ItemProvider searchCounterpart={true} {...props}/></ModuleProvider>);
+};
+
+const propertiesBaseModPermissioncardIdefRequest = ["message","approved"] as const;
+const allPropertiesModPermissioncardIdefRequest = (EXTERNALLY_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(STANDARD_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(propertiesBaseModPermissioncardIdefRequest as unknown as string[]);
+interface IPropertiesMemoModPermissioncardIdefRequest extends IPropertiesMemoBase {
+message: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>;
+approved: IPropertiesMemoProperty<PropertyDefinitionSupportedBooleanType>
+};
+
+type PropertiesForSettingModPermissioncardIdefRequest = {
+message: {id: "message", value: IPropertyDefinitionSupportedTextType, variant: never};
+approved: {id: "approved", value: PropertyDefinitionSupportedBooleanType, variant: never}
+};
+
+
+const propertiesBaseModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest = ["search","created_by","since","until"] as const;
+const allPropertiesModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest = (EXTERNALLY_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(STANDARD_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
+  .concat(propertiesBaseModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest as unknown as string[]);
+interface IPropertiesMemoModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest extends IPropertiesMemoBase {
+search: IPropertiesMemoProperty<PropertyDefinitionSupportedStringType>;
+since: IPropertiesMemoProperty<PropertyDefinitionSupportedDateTimeType>;
+until: IPropertiesMemoProperty<PropertyDefinitionSupportedDateTimeType>
+};
+
+type PropertiesForSettingModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest = {
+search: {id: "search", value: PropertyDefinitionSupportedStringType, variant: never};
+created_by: {id: "created_by", value: PropertyDefinitionSupportedStringType, variant: never};
+since: {id: "since", value: PropertyDefinitionSupportedDateTimeType, variant: never};
+until: {id: "until", value: PropertyDefinitionSupportedDateTimeType, variant: never}
+};
+
+export interface ItemProviderForModPermissioncardIdefRequest extends IItemProviderHookElementNonSearchOnly<typeof propertiesBaseModPermissioncardIdefRequest[number]> {properties: IPropertiesMemoModPermissioncardIdefRequest};
+export function useModPermissioncardIdefRequestItemProvider(options: ICustomItemProviderOptions<typeof propertiesBaseModPermissioncardIdefRequest[number], PropertiesForSettingModPermissioncardIdefRequest> = {}) {
+
+  const provider = useItemProvider<string, unknown, unknown>({
+    ...options,
+    itemDefinition: "MOD_permissioncard__IDEF_request",
+    module: "MOD_permissioncard",
+    searchCounterpart: false,
+  });
+
+  const properties = usePropertiesMemoFor<IPropertiesMemoModPermissioncardIdefRequest>(allPropertiesModPermissioncardIdefRequest, provider);
+
+  return ({
+    ...(provider as IItemProviderHookElementNonSearchOnly<typeof propertiesBaseModPermissioncardIdefRequest[number]>),
+    properties,
+  }) as ItemProviderForModPermissioncardIdefRequest;
+};
+export function ModPermissioncardIdefRequestItemProvider(props: ICustomItemProviderProps<typeof propertiesBaseModPermissioncardIdefRequest[number], PropertiesForSettingModPermissioncardIdefRequest> = {}) {
+
+  return (<ItemProvider itemDefinition="MOD_permissioncard__IDEF_request" searchCounterpart={false} {...props}/>);
+};
+export interface ItemProviderForModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest extends IItemProviderHookElementSearchOnly<typeof propertiesBaseModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest[number],ModPermissioncardIdefRequestClientSideRqType,ModPermissioncardIdefRequestFlatRqType> {properties: IPropertiesMemoModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest};
+export function useModPermissioncardIdefRequestSearchItemProvider(options: ICustomItemProviderSearchOptions<typeof propertiesBaseModPermissioncardIdefRequest[number], PropertiesForSettingModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest> = {}) {
+
+  const provider = useItemProvider<string, unknown, unknown>({
+    ...options,
+    itemDefinition: "MOD_permissioncard__IDEF_request",
+    module: "MOD_permissioncard",
+    searchCounterpart: true,
+  });
+
+  const properties = usePropertiesMemoFor<IPropertiesMemoModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest>(allPropertiesModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest, provider);
+
+  return ({
+    ...(provider as IItemProviderHookElementSearchOnly<typeof propertiesBaseModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest[number],ModPermissioncardIdefRequestClientSideRqType,ModPermissioncardIdefRequestFlatRqType>),
+    properties,
+  }) as ItemProviderForModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest;
+};
+export function ModPermissioncardIdefRequestSearchItemProvider(props: ICustomItemProviderSearchProps<typeof propertiesBaseModPermissioncardIdefRequest[number], PropertiesForSettingModPermissioncardModSEARCH_MODE_PermissioncardIdefRequest> = {}) {
+
+  return (<ItemProvider itemDefinition="MOD_permissioncard__IDEF_request" searchCounterpart={true} {...props}/>);
+};

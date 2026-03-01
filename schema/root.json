@@ -6,7 +6,8 @@
     "cms",
     "mail",
     "ai",
-    "thread"
+    "thread",
+    "permissioncard"
   ],
   "i18n": "main-i18n.properties"
 }
