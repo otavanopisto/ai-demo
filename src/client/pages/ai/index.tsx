@@ -2,7 +2,25 @@
 import React, { useCallback } from "react";
 import Route from "@onzag/itemize/client/components/navigation/Route";
 import { useModAiIdefAgentItemProvider, useModThreadIdefMessageItemProvider, useModThreadIdefMessageSearchItemProvider, useModThreadIdefThreadItemProvider, useModThreadIdefThreadSearchItemProvider } from "../../../schema";
-import { Box, Button } from "@mui/material";
+import {
+    Box,
+    Button,
+    Paper,
+    Typography,
+    TextField,
+    Divider,
+    CircularProgress,
+    Stack,
+    Avatar,
+    Chip,
+    IconButton,
+} from "@mui/material";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
+import AddCommentIcon from "@mui/icons-material/AddComment";
+import EditIcon from "@mui/icons-material/Edit";
+import SendIcon from "@mui/icons-material/Send";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import PersonIcon from "@mui/icons-material/Person";
 import I18nRead from "@onzag/itemize/client/components/localization/I18nRead";
 import I18nReadError from "@onzag/itemize/client/components/localization/I18nReadError";
 import { goBack, localizedRedirectTo } from "@onzag/itemize/client/components/navigation/index";
@@ -29,24 +47,37 @@ function AIAgentCreatePage() {
     }, [itemProvider]);
 
     return (
-        <>
-            <Box>
-                {itemProvider.getEntryForProperty("name")}
-                {itemProvider.getEntryForProperty("provider")}
-                {itemProvider.getEntryForProperty("description")}
-                {itemProvider.getEntryForProperty("system_prompt")}
-                {itemProvider.getEntryForProperty("behaviour")}
-                {itemProvider.getEntryForProperty("expertise")}
-            </Box>
-            <Button variant="contained" color="primary" onClick={saveAgent}>
-                <I18nRead i18nId="save_agent" context="ai/agent" />
-            </Button>
-            {itemProvider.context.submitError ? (
-                <Box color="error.main">
-                    <I18nReadError error={itemProvider.context.submitError} />
+        <Box sx={{ maxWidth: 720, mx: "auto", py: 4, px: 2 }}>
+            <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 3 }}>
+                    <Avatar sx={{ bgcolor: "primary.main", width: 44, height: 44 }}>
+                        <SmartToyIcon />
+                    </Avatar>
+                    <Typography variant="h5" fontWeight={600}>
+                        <I18nRead i18nId="save_agent" context="ai/agent" />
+                    </Typography>
                 </Box>
-            ) : null}
-        </>
+                <Divider sx={{ mb: 3 }} />
+                <Stack spacing={2.5}>
+                    {itemProvider.getEntryForProperty("name")}
+                    {itemProvider.getEntryForProperty("provider")}
+                    {itemProvider.getEntryForProperty("description")}
+                    {itemProvider.getEntryForProperty("system_prompt")}
+                    {itemProvider.getEntryForProperty("behaviour")}
+                    {itemProvider.getEntryForProperty("expertise")}
+                </Stack>
+                <Box sx={{ mt: 4, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 2 }}>
+                    {itemProvider.context.submitError ? (
+                        <Typography color="error" variant="body2">
+                            <I18nReadError error={itemProvider.context.submitError} />
+                        </Typography>
+                    ) : null}
+                    <Button variant="contained" color="primary" size="large" onClick={saveAgent} sx={{ borderRadius: 2, px: 4, textTransform: "none", fontWeight: 600 }}>
+                        <I18nRead i18nId="save_agent" context="ai/agent" />
+                    </Button>
+                </Box>
+            </Paper>
+        </Box>
     );
 }
 
@@ -85,24 +116,37 @@ function AIAgentEditPage(props: IAIAgentEditPageProps) {
     }, [itemProvider]);
 
     return (
-        <>
-            <Box>
-                {itemProvider.getEntryForProperty("name")}
-                {itemProvider.getEntryForProperty("provider")}
-                {itemProvider.getEntryForProperty("description")}
-                {itemProvider.getEntryForProperty("system_prompt")}
-                {itemProvider.getEntryForProperty("behaviour")}
-                {itemProvider.getEntryForProperty("expertise")}
-            </Box>
-            <Button variant="contained" color="primary" onClick={saveAgent}>
-                <I18nRead i18nId="edit_agent" context="ai/agent" />
-            </Button>
-            {itemProvider.context.submitError ? (
-                <Box color="error.main">
-                    <I18nReadError error={itemProvider.context.submitError} />
+        <Box sx={{ maxWidth: 720, mx: "auto", py: 4, px: 2 }}>
+            <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 3 }}>
+                    <Avatar sx={{ bgcolor: "secondary.main", width: 44, height: 44 }}>
+                        <EditIcon />
+                    </Avatar>
+                    <Typography variant="h5" fontWeight={600}>
+                        <I18nRead i18nId="edit_agent" context="ai/agent" />
+                    </Typography>
                 </Box>
-            ) : null}
-        </>
+                <Divider sx={{ mb: 3 }} />
+                <Stack spacing={2.5}>
+                    {itemProvider.getEntryForProperty("name")}
+                    {itemProvider.getEntryForProperty("provider")}
+                    {itemProvider.getEntryForProperty("description")}
+                    {itemProvider.getEntryForProperty("system_prompt")}
+                    {itemProvider.getEntryForProperty("behaviour")}
+                    {itemProvider.getEntryForProperty("expertise")}
+                </Stack>
+                <Box sx={{ mt: 4, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 2 }}>
+                    {itemProvider.context.submitError ? (
+                        <Typography color="error" variant="body2">
+                            <I18nReadError error={itemProvider.context.submitError} />
+                        </Typography>
+                    ) : null}
+                    <Button variant="contained" color="primary" size="large" onClick={saveAgent} sx={{ borderRadius: 2, px: 4, textTransform: "none", fontWeight: 600 }}>
+                        <I18nRead i18nId="edit_agent" context="ai/agent" />
+                    </Button>
+                </Box>
+            </Paper>
+        </Box>
     );
 }
 
@@ -158,52 +202,104 @@ export function AIAgentStartRunPage(props: IAIAgentEditPageProps) {
     });
 
     return (
-        <>
-            {userRole === "TEACHER" || userRole === "ADMIN" ? <Box>
-                <Link to={`/ai/agent/edit/${itemProvider.context.forId}`} style={{ textDecoration: 'none' }}>
-                    <Button variant="contained" color="primary">
-                        <I18nRead i18nId="edit_agent" context="ai/agent" />
-                    </Button>
-                </Link>
-            </Box> : null}
-            <Box>
-                <I18nRead i18nId="talk_with_agent" context="ai/agent" args={[itemProvider.getViewForProperty("name")]} />
-                {itemProvider.getViewForProperty("description")}
-            </Box>
-            <Box>
-                <Button variant="contained" color="primary" onClick={createNewThread}>
+        <Box sx={{ maxWidth: 800, mx: "auto", py: 4, px: 2 }}>
+            {/* Agent Info Header */}
+            <Paper elevation={3} sx={{ p: 4, borderRadius: 3, mb: 3, background: "linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%)" }}>
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                        <Avatar sx={{ bgcolor: "primary.main", width: 56, height: 56 }}>
+                            <SmartToyIcon sx={{ fontSize: 32 }} />
+                        </Avatar>
+                        <Box>
+                            <Typography variant="h5" fontWeight={700}>
+                                <I18nRead i18nId="talk_with_agent" context="ai/agent" args={[itemProvider.getViewForProperty("name")]} />
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                                {itemProvider.getViewForProperty("description")}
+                            </Typography>
+                        </Box>
+                    </Box>
+                    {userRole === "TEACHER" || userRole === "ADMIN" ? (
+                        <Link to={`/ai/agent/edit/${itemProvider.context.forId}`} style={{ textDecoration: 'none' }}>
+                            <Button variant="outlined" color="primary" startIcon={<EditIcon />} sx={{ borderRadius: 2, textTransform: "none" }}>
+                                <I18nRead i18nId="edit_agent" context="ai/agent" />
+                            </Button>
+                        </Link>
+                    ) : null}
+                </Box>
+            </Paper>
+
+            {/* New Conversation Button */}
+            <Box sx={{ mb: 3 }}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    startIcon={<AddCommentIcon />}
+                    onClick={createNewThread}
+                    sx={{ borderRadius: 2, textTransform: "none", fontWeight: 600, px: 4, py: 1.2 }}
+                >
                     <I18nRead i18nId="start_new_conversation" context="ai/agent" />
                 </Button>
             </Box>
-            <Box>
-                <I18nRead i18nId="existing_threads" context="ai/agent" />
+
+            {/* Threads Section */}
+            <Paper elevation={1} sx={{ borderRadius: 3, overflow: "hidden" }}>
+                <Box sx={{ px: 3, py: 2, bgcolor: "grey.50", borderBottom: "1px solid", borderColor: "divider" }}>
+                    <Typography variant="subtitle1" fontWeight={600} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <ChatBubbleOutlineIcon fontSize="small" />
+                        <I18nRead i18nId="existing_threads" context="ai/agent" />
+                    </Typography>
+                </Box>
                 {searchLoaded.error ? (
-                    <Box color="error.main">
-                        <I18nReadError error={searchLoaded.error} />
+                    <Box sx={{ p: 2 }}>
+                        <Typography color="error" variant="body2">
+                            <I18nReadError error={searchLoaded.error} />
+                        </Typography>
                     </Box>
                 ) : null}
-                {searchLoaded.searchRecords.map((thread) => (
-                    <Box key={thread.id}>
-                        <Link to={`/ai/agent/run/${props.match.params.id}/thread/${thread.id}`} style={{ textDecoration: 'none' }}>
-                            <ModuleProvider module="thread">
-                                <ItemProvider {...thread.providerArgs}>
-                                    <View id="title" rendererArgs={{ nullNode: <I18nRead i18nId="untitled_thread" capitalize={true} context="ai/agent" /> }} />
-                                </ItemProvider>
-                            </ModuleProvider>
+                <Stack divider={<Divider />}>
+                    {searchLoaded.searchRecords.map((thread) => (
+                        <Link key={thread.id} to={`/ai/agent/run/${props.match.params.id}/thread/${thread.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <Box sx={{
+                                px: 3,
+                                py: 2,
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 2,
+                                transition: "background-color 0.15s",
+                                "&:hover": { bgcolor: "action.hover" },
+                                cursor: "pointer",
+                            }}>
+                                <ChatBubbleOutlineIcon fontSize="small" color="action" />
+                                <Typography variant="body1">
+                                    <ModuleProvider module="thread">
+                                        <ItemProvider {...thread.providerArgs}>
+                                            <View id="title" rendererArgs={{ nullNode: <I18nRead i18nId="untitled_thread" capitalize={true} context="ai/agent" /> }} />
+                                        </ItemProvider>
+                                    </ModuleProvider>
+                                </Typography>
+                            </Box>
                         </Link>
-                    </Box>
-                ))}
+                    ))}
+                </Stack>
                 {searchLoaded.isLoadingSearchResults || searchLoaded.searching ? (
-                    <Box>
-                        <I18nRead i18nId="loading_threads" context="ai/agent" />
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1.5, py: 4 }}>
+                        <CircularProgress size={22} />
+                        <Typography variant="body2" color="text.secondary">
+                            <I18nRead i18nId="loading_threads" context="ai/agent" />
+                        </Typography>
                     </Box>
                 ) : (searchLoaded.searchRecords.length === 0 ? (
-                    <Box>
-                        <I18nRead i18nId="no_threads" context="ai/agent" />
+                    <Box sx={{ py: 5, textAlign: "center" }}>
+                        <ChatBubbleOutlineIcon sx={{ fontSize: 40, color: "text.disabled", mb: 1 }} />
+                        <Typography variant="body2" color="text.secondary">
+                            <I18nRead i18nId="no_threads" context="ai/agent" />
+                        </Typography>
                     </Box>
                 ) : null)}
-            </Box>
-        </>
+            </Paper>
+        </Box>
     );
 }
 
@@ -287,53 +383,150 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
     }, [newMessageItemProvider, props.match.params.tid]);
 
     return (
-        <>
-            <Box>
-                <I18nRead i18nId="talking_with_agent" context="ai/agent" args={[itemProvider.getViewForProperty("name")]} />
-                {itemProvider.getViewForProperty("description")}
-            </Box>
-            <Box>
-                <I18nRead i18nId="conversation_thread" context="ai/agent" />
-                <br />
-                {threadItemProvider.getViewForProperty({
-                    id: "title",
-                    rendererArgs: {
-                        nullNode: <I18nRead i18nId="untitled_thread" capitalize={true} context="ai/agent" />,
-                    }
-                })}
-            </Box>
-            <Box>
-                <I18nRead i18nId="messages" context="thread/thread" />
+        <Box sx={{ maxWidth: 900, mx: "auto", py: 3, px: 2, display: "flex", flexDirection: "column", height: "calc(100vh - 100px)" }}>
+            {/* Agent & Thread Header */}
+            <Paper elevation={2} sx={{ p: 2.5, borderRadius: 3, mb: 2, flexShrink: 0 }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                    <Avatar sx={{ bgcolor: "primary.main", width: 48, height: 48 }}>
+                        <SmartToyIcon />
+                    </Avatar>
+                    <Box sx={{ flex: 1 }}>
+                        <Typography variant="h6" fontWeight={600}>
+                            <I18nRead i18nId="talking_with_agent" context="ai/agent" args={[itemProvider.getViewForProperty("name")]} />
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {itemProvider.getViewForProperty("description")}
+                        </Typography>
+                    </Box>
+                    <Chip
+                        size="small"
+                        variant="outlined"
+                        label={threadItemProvider.getViewForProperty({
+                            id: "title",
+                            rendererArgs: {
+                                nullNode: <I18nRead i18nId="untitled_thread" capitalize={true} context="ai/agent" />,
+                            }
+                        })}
+                    />
+                </Box>
+            </Paper>
+
+            {/* Messages Area */}
+            <Paper elevation={1} sx={{ flex: 1, borderRadius: 3, display: "flex", flexDirection: "column", overflow: "hidden", mb: 2 }}>
+                <Box sx={{ px: 3, py: 1.5, bgcolor: "grey.50", borderBottom: "1px solid", borderColor: "divider" }}>
+                    <Typography variant="subtitle2" fontWeight={600}>
+                        <I18nRead i18nId="messages" context="thread/thread" />
+                    </Typography>
+                </Box>
+
                 {messagesSearchLoaded.error ? (
-                    <Box color="error.main">
-                        <I18nReadError error={messagesSearchLoaded.error} />
+                    <Box sx={{ p: 2 }}>
+                        <Typography color="error" variant="body2">
+                            <I18nReadError error={messagesSearchLoaded.error} />
+                        </Typography>
                     </Box>
                 ) : null}
-                {[...messagesSearchLoaded.searchRecords].reverse().map((message) => (
-                    <Box key={message.id} sx={{ border: message.searchResult?.DATA?.role === "user" ? "1px solid gray" : "1px solid blue", margin: '5px', padding: '5px' }}>
-                        <ModuleProvider module="thread">
-                            <ItemProvider {...message.providerArgs}>
-                                <View id="content" />
-                            </ItemProvider>
-                        </ModuleProvider>
-                    </Box>
-                ))}
-                {messagesSearchLoaded.isLoadingSearchResults || messagesSearchLoaded.searching ? (
-                    <Box>
-                        <I18nRead i18nId="loading_messages" context="thread/message" />
-                    </Box>
-                ) : (messagesSearchLoaded.searchRecords.length === 0 ? (
-                    <Box>
-                        <I18nRead i18nId="no_messages" context="thread/message" />
-                    </Box>
-                ) : null)}
-            </Box>
-            <input type="text" placeholder="Type your message here..." style={{ width: '100%', padding: '10px', marginTop: '10px' }} value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                    submitNewMessage();
-                }
-            }} />
-        </>
+
+                <Box sx={{ flex: 1, overflowY: "auto", px: 3, py: 2, display: "flex", flexDirection: "column", gap: 1.5 }}>
+                    {messagesSearchLoaded.isLoadingSearchResults || messagesSearchLoaded.searching ? (
+                        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1.5, py: 6 }}>
+                            <CircularProgress size={22} />
+                            <Typography variant="body2" color="text.secondary">
+                                <I18nRead i18nId="loading_messages" context="thread/message" />
+                            </Typography>
+                        </Box>
+                    ) : messagesSearchLoaded.searchRecords.length === 0 ? (
+                        <Box sx={{ py: 6, textAlign: "center" }}>
+                            <ChatBubbleOutlineIcon sx={{ fontSize: 48, color: "text.disabled", mb: 1 }} />
+                            <Typography variant="body2" color="text.secondary">
+                                <I18nRead i18nId="no_messages" context="thread/message" />
+                            </Typography>
+                        </Box>
+                    ) : (
+                        [...messagesSearchLoaded.searchRecords].reverse().map((message) => {
+                            const isUser = message.searchResult?.DATA?.role === "user";
+                            return (
+                                <Box
+                                    key={message.id}
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: isUser ? "flex-end" : "flex-start",
+                                        gap: 1.5,
+                                    }}
+                                >
+                                    {!isUser && (
+                                        <Avatar sx={{ bgcolor: "primary.main", width: 32, height: 32, mt: 0.5 }}>
+                                            <SmartToyIcon sx={{ fontSize: 18 }} />
+                                        </Avatar>
+                                    )}
+                                    <Paper
+                                        elevation={0}
+                                        sx={{
+                                            px: 2.5,
+                                            py: 1.5,
+                                            maxWidth: "75%",
+                                            borderRadius: isUser ? "18px 18px 4px 18px" : "18px 18px 18px 4px",
+                                            bgcolor: isUser ? "primary.main" : "grey.100",
+                                            color: isUser ? "primary.contrastText" : "text.primary",
+                                        }}
+                                    >
+                                        <ModuleProvider module="thread">
+                                            <ItemProvider {...message.providerArgs}>
+                                                <View id="content" />
+                                            </ItemProvider>
+                                        </ModuleProvider>
+                                    </Paper>
+                                    {isUser && (
+                                        <Avatar sx={{ bgcolor: "grey.400", width: 32, height: 32, mt: 0.5 }}>
+                                            <PersonIcon sx={{ fontSize: 18 }} />
+                                        </Avatar>
+                                    )}
+                                </Box>
+                            );
+                        })
+                    )}
+                </Box>
+            </Paper>
+
+            {/* Input Area */}
+            <Paper elevation={2} sx={{ borderRadius: 3, p: 1.5, flexShrink: 0, display: "flex", alignItems: "center", gap: 1 }}>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    placeholder="Type your message here..."
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            submitNewMessage();
+                        }
+                    }}
+                    sx={{
+                        "& .MuiOutlinedInput-root": {
+                            borderRadius: 3,
+                            bgcolor: "grey.50",
+                        },
+                    }}
+                />
+                <IconButton
+                    color="primary"
+                    onClick={submitNewMessage}
+                    disabled={!inputValue.trim()}
+                    sx={{
+                        bgcolor: "primary.main",
+                        color: "white",
+                        width: 42,
+                        height: 42,
+                        "&:hover": { bgcolor: "primary.dark" },
+                        "&.Mui-disabled": { bgcolor: "grey.300", color: "grey.500" },
+                    }}
+                >
+                    <SendIcon fontSize="small" />
+                </IconButton>
+            </Paper>
+        </Box>
     );
 }
 
