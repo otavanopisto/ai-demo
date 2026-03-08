@@ -7,6 +7,7 @@ import { IMenuEntry } from "@onzag/itemize/client/fast-prototyping/components/na
 import ImportantDevicesIcon from "@mui/icons-material/ImportantDevices";
 import HomeIcon from "@mui/icons-material/Home";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 
 import { Frontpage } from "./pages/frontpage";
 import { Contact } from "./pages/contact";
@@ -34,6 +35,7 @@ import { AltSectionScroller } from "@onzag/itemize/client/fast-prototyping/compo
 import PageTimetrack from "@onzag/itemize/client/components/analytics/PageTimetrack";
 
 import Ai from "./pages/ai";
+import Requests from "./pages/requests";
 
 /**
  * The default admin entries
@@ -73,6 +75,17 @@ export const MENU_ENTRIES: IMenuEntry[] = [
       capitalize: true,
     },
   },
+  {
+    path: "/requests",
+    icon: <AdminPanelSettingsIcon />,
+    module: "permissioncard",
+    idef: "request",
+    i18nProps: {
+      i18nId: "requests",
+      capitalize: true,
+    },
+    roles: ["ADMIN", "TEACHER"],
+  }
 ];
 
 export default function App() {
@@ -122,6 +135,8 @@ export default function App() {
       <Route path="/contact" component={Contact}/>
 
       <Route path="/ai" component={Ai} />
+
+      <Route path="/" component={Requests} />
 
       <Footer/>
 

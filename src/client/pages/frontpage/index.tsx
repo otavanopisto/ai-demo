@@ -12,7 +12,7 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { useUserDataRetriever } from "@onzag/itemize/client/components/user/UserDataRetriever";
 import { useItemProvider } from "@onzag/itemize/client/providers/item/hook";
-import { useModAiIdefAgentSearchItemProvider } from "../../../schema";
+import { useModAiIdefAgentSearchItemProvider, useModPermissioncardIdefRequestItemProvider, useModPermissioncardIdefRequestSearchItemProvider } from "../../../schema";
 import { Card, CircularProgress, Divider, Avatar, Stack } from "@mui/material";
 import { ItemProvider } from "@onzag/itemize/client/providers/item";
 import View from "@onzag/itemize/client/components/property/View";
@@ -21,6 +21,8 @@ import Link from "@onzag/itemize/client/components/navigation/Link";
 import { ModuleProvider } from "@onzag/itemize/client/providers/module";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import AddIcon from "@mui/icons-material/Add";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 const cardStyle = {
   p: 0,
@@ -35,6 +37,22 @@ const cardStyle = {
 
 function LoggedInView() {
   const userData = useUserDataRetriever();
+  const allRequests = useModPermissioncardIdefRequestSearchItemProvider({
+    automaticSearch: {
+      limit: 1,
+      offset: 0,
+      requestedProperties: ["message", "approved"],
+      searchByProperties: [],
+      createdBy: userData.id,
+      traditional: true,
+    },
+    automaticSearchForce: true,
+  });
+  const searchLoadedAllRequests = allRequests.useSearchLoader({
+    currentPage: 0,
+    pageSize: 1,
+    startInSearchingState: true,
+  });
   const allBots = useModAiIdefAgentSearchItemProvider({
     automaticSearch: {
       limit: 100,
@@ -50,6 +68,92 @@ function LoggedInView() {
     pageSize: 100,
     startInSearchingState: true,
   });
+
+  const hasNoRequests = !searchLoadedAllRequests.isLoadingSearchResults && !searchLoadedAllRequests.searching && searchLoadedAllRequests.searchRecords.length === 0;
+  
+  const requestItemProvider = useModPermissioncardIdefRequestItemProvider({
+    forId: searchLoadedAllRequests.searchRecords[0]?.id || null,
+    properties: ["message", "approved"],
+  });
+
+  const hasApprovedRequest = requestItemProvider.properties.approved.value;
+
+  if (hasNoRequests) {
+    return (
+      <Box sx={{ maxWidth: 520, mx: "auto", py: 8, px: 2 }}>
+        <Paper
+          elevation={2}
+          sx={{
+            py: 6,
+            px: 4,
+            textAlign: "center",
+            borderRadius: 4,
+            background: "linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%)",
+          }}
+        >
+          <Avatar sx={{ bgcolor: "primary.light", color: "primary.dark", width: 64, height: 64, mx: "auto", mb: 2.5 }}>
+            <AssignmentIcon sx={{ fontSize: 32 }} />
+          </Avatar>
+          <Typography variant="h6" fontWeight={600} gutterBottom>
+            <I18nRead i18nId="no_requests_yet" context="permissioncard/request" />
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 3, maxWidth: 320, mx: "auto" }}>
+            <I18nRead i18nId="no_requests_yet_description" context="permissioncard/request" />
+          </Typography>
+          <Link to="/request/new" style={{ textDecoration: 'none' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              startIcon={<AddIcon />}
+              sx={{ borderRadius: 2.5, textTransform: "none", fontWeight: 600, px: 4, py: 1.2 }}
+            >
+              <I18nRead i18nId="make_a_request" context="permissioncard/request" />
+            </Button>
+          </Link>
+        </Paper>
+      </Box>
+    );
+  }
+
+  if (!hasApprovedRequest) {
+    return (
+      <Box sx={{ maxWidth: 520, mx: "auto", py: 8, px: 2 }}>
+        <Paper
+          elevation={2}
+          sx={{
+            py: 6,
+            px: 4,
+            textAlign: "center",
+            borderRadius: 4,
+            background: "linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%)",
+          }}
+        >
+          <Avatar sx={{ bgcolor: "warning.main", color: "warning.contrastText", width: 64, height: 64, mx: "auto", mb: 2.5 }}>
+            <HourglassEmptyIcon sx={{ fontSize: 32 }} />
+          </Avatar>
+          <Typography variant="h6" fontWeight={600} gutterBottom>
+            <I18nRead i18nId="request_pending" context="permissioncard/request" />
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 3, maxWidth: 320, mx: "auto" }}>
+            <I18nRead i18nId="request_pending_description" context="permissioncard/request" />
+          </Typography>
+          <Link to={`/request/edit/${searchLoadedAllRequests.searchRecords[0]?.id}`} style={{ textDecoration: 'none' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              startIcon={<SmartToyIcon />}
+              sx={{ borderRadius: 2.5, textTransform: "none", fontWeight: 600, px: 4, py: 1.2 }}
+            >
+              <I18nRead i18nId="view_request" context="permissioncard/request" />
+            </Button>
+          </Link>
+        </Paper>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", py: 4, px: 2 }}>
       {/* Header */}
