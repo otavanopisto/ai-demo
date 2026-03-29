@@ -770,18 +770,22 @@ export function ModThreadIdefThreadSearchItemProvider(props: ICustomItemProvider
   return (<ItemProvider itemDefinition="MOD_thread__IDEF_thread" searchCounterpart={true} {...props}/>);
 };
 
-const propertiesBaseModThreadIdefMessage = ["role","content"] as const;
+const propertiesBaseModThreadIdefMessage = ["role","content","input_tokens_count","output_tokens_count"] as const;
 const allPropertiesModThreadIdefMessage = (EXTERNALLY_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
   .concat(STANDARD_ACCESSIBLE_RESERVED_BASE_PROPERTIES as unknown as string[])
   .concat(propertiesBaseModThreadIdefMessage as unknown as string[]);
 interface IPropertiesMemoModThreadIdefMessage extends IPropertiesMemoBase {
 role: IPropertiesMemoProperty<PropertyDefinitionSupportedStringType>;
-content: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>
+content: IPropertiesMemoProperty<IPropertyDefinitionSupportedTextType>;
+input_tokens_count: IPropertiesMemoProperty<PropertyDefinitionSupportedNumberType>;
+output_tokens_count: IPropertiesMemoProperty<PropertyDefinitionSupportedNumberType>
 };
 
 type PropertiesForSettingModThreadIdefMessage = {
 role: {id: "role", value: PropertyDefinitionSupportedStringType, variant: never};
-content: {id: "content", value: IPropertyDefinitionSupportedTextType, variant: never}
+content: {id: "content", value: IPropertyDefinitionSupportedTextType, variant: never};
+input_tokens_count: {id: "input_tokens_count", value: PropertyDefinitionSupportedNumberType, variant: never};
+output_tokens_count: {id: "output_tokens_count", value: PropertyDefinitionSupportedNumberType, variant: never}
 };
 
 

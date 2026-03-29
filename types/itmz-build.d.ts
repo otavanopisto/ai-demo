@@ -1208,6 +1208,10 @@ interface ModThreadIdefMessageFlatRqType extends ModThreadFlatRqType {
 		value?: string;
 		language?: string;
 	};
+	/**Input tokens count - CREATE ACCESS: &ANYONE - READ ACCESS: &ANYONE - EDIT ACCESS: &ANYONE - */
+	input_tokens_count: number;
+	/**Output tokens count - CREATE ACCESS: &ANYONE - READ ACCESS: &ANYONE - EDIT ACCESS: &ANYONE - */
+	output_tokens_count: number;
 }
 
 interface ModThreadIdefMessageClientSideRqType extends ModThreadClientSideRqType {
@@ -1219,6 +1223,10 @@ interface ModThreadIdefMessageClientSideRqType extends ModThreadClientSideRqType
 			value?: string;
 			language?: string;
 		};
+		/**Input tokens count - CREATE ACCESS: &ANYONE - READ ACCESS: &ANYONE - EDIT ACCESS: &ANYONE - */
+		input_tokens_count: number;
+		/**Output tokens count - CREATE ACCESS: &ANYONE - READ ACCESS: &ANYONE - EDIT ACCESS: &ANYONE - */
+		output_tokens_count: number;
 	};
 }
 
@@ -1231,6 +1239,8 @@ interface ModThreadIdefOnlyMessageSQLType {
 	content_DICTIONARY?: any;
 	content_LANGUAGE?: string;
 	content_VECTOR?: string;
+	input_tokens_count?: number;
+	output_tokens_count?: number;
 }
 
 interface ModThreadIdefMessageSQLType extends ModThreadSQLType, ModThreadIdefOnlyMessageSQLType {};

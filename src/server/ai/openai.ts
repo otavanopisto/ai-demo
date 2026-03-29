@@ -48,6 +48,8 @@ export default async function processThreadWithOpenAI(
     });
 
     let isFirstChunk = true;
+    let inputTokens = 0;
+    let outputTokens = 0;
     for await (const event of response) {
         if (event.type === "response.output_text.delta") {
             const text = event.delta;
@@ -62,6 +64,18 @@ export default async function processThreadWithOpenAI(
                 currentSQLValue: threadMessage,
             });
             isFirstChunk = false;
+        } else if (event.type === "response.completed") {
+            inputTokens = event.response.usage.input_tokens;
+            outputTokens = event.response.usage.output_tokens;
+            console.log("Input tokens:", inputTokens, "Output tokens:", outputTokens);
+            threadMessage = await appData.cache.requestUpdate<ModThreadIdefMessageSQLType>("thread/message", threadMessage.id, threadMessage.version, {
+                input_tokens_count: inputTokens,
+                output_tokens_count: outputTokens,
+            }, {
+                dictionary: "english",
+                language: "en",
+                currentSQLValue: threadMessage,
+            });
         }
     }
 }

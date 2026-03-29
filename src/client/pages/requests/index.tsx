@@ -6,7 +6,7 @@ import Entry from "@onzag/itemize/client/components/property/Entry";
 import View from "@onzag/itemize/client/components/property/View";
 import { ModuleProvider } from "@onzag/itemize/client/providers/module";
 import Reader from "@onzag/itemize/client/components/property/Reader";
-import UserDataRetriever from "@onzag/itemize/client/components/user/UserDataRetriever";
+import UserDataRetriever, { useUserDataRetriever } from "@onzag/itemize/client/components/user/UserDataRetriever";
 import { IActionResponseWithValue } from "@onzag/itemize/client/providers/item";
 import { Paper, Typography, List, ListItem, ListItemText, Divider, Box, Avatar, CircularProgress, Stack, ListItemAvatar, Chip } from "@mui/material";
 import SearchLoader from "@onzag/itemize/client/components/search/SearchLoader";
@@ -18,8 +18,11 @@ import InboxIcon from "@mui/icons-material/Inbox";
 import Link from "@onzag/itemize/client/components/navigation/Link";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 export function RequestList() {
+  const userData = useUserDataRetriever();
+  const isAdmin = userData?.role === "ADMIN";
   return (
     <ModuleProvider module="permissioncard">
       <ItemProvider
@@ -156,6 +159,32 @@ export function RequestList() {
                                               />
                                             )}
                                           </Reader>
+                                          {isAdmin && (
+                                            <Reader id="created_by">
+                                              {(createdBy: string) => (
+                                                <Link
+                                                  to={`/profile/${createdBy}`}
+                                                  style={{ textDecoration: "none" }}
+                                                  onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                                                >
+                                                  <I18nRead i18nId="check_role">
+                                                    {(i18nCheckRole: string) => (
+                                                      <Chip
+                                                        size="small"
+                                                        icon={<ManageAccountsIcon />}
+                                                        label={i18nCheckRole}
+                                                        color="info"
+                                                        variant="outlined"
+                                                        clickable
+                                                        sx={{ fontWeight: 500 }}
+                                                      />
+                                                    )}
+                                                  </I18nRead>
+
+                                                </Link>
+                                              )}
+                                            </Reader>
+                                          )}
                                         </Box>
                                       }
                                       secondary={

@@ -9,7 +9,10 @@
         "cms",
         "privacy-policy",
         "terms-and-conditions",
-        "contact"
+        "contact",
+        "ai/...",
+        "request/...",
+        "requests/..."
     ],
     "allowedLocations": [
         {

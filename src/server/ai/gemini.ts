@@ -48,6 +48,8 @@ export default async function processThreadWithGemini(
     });
 
     let isFirstChunk = true;
+    let inputTokens = 0;
+    let outputTokens = 0;
     for await (const chunk of response) {
         threadMessage = await appData.cache.requestUpdate<ModThreadIdefMessageSQLType>("thread/message", threadMessage.id, threadMessage.version, {
             content: {
@@ -60,5 +62,20 @@ export default async function processThreadWithGemini(
             currentSQLValue: threadMessage,
         });
         isFirstChunk = false;
+
+        if (chunk.usageMetadata) {
+            inputTokens = chunk.usageMetadata.promptTokenCount || 0;
+            outputTokens = chunk.usageMetadata.candidatesTokenCount || 0;
+        }
     }
+
+    console.log("Input tokens:", inputTokens, "Output tokens:", outputTokens);
+    threadMessage = await appData.cache.requestUpdate<ModThreadIdefMessageSQLType>("thread/message", threadMessage.id, threadMessage.version, {
+        input_tokens_count: inputTokens,
+        output_tokens_count: outputTokens,
+    }, {
+        dictionary: "english",
+        language: "en",
+        currentSQLValue: threadMessage,
+    });
 }

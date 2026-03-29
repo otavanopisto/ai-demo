@@ -5,20 +5,24 @@ import { ItemProvider } from "@onzag/itemize/client/providers/item";
 import Entry from "@onzag/itemize/client/components/property/Entry";
 import View from "@onzag/itemize/client/components/property/View";
 import { ModuleProvider } from "@onzag/itemize/client/providers/module";
-import UserDataRetriever from "@onzag/itemize/client/components/user/UserDataRetriever";
+import UserDataRetriever, { useUserDataRetriever } from "@onzag/itemize/client/components/user/UserDataRetriever";
 import Route from "@onzag/itemize/client/components/navigation/Route"
 import { SubmitButton } from "@onzag/itemize/client/fast-prototyping/components/buttons";
-import { Paper, Typography, List, ListItem, ListItemText, Divider, Box, Avatar, Stack } from "@mui/material";
+import { Paper, Typography, List, ListItem, ListItemText, Divider, Box, Avatar, Stack, Chip } from "@mui/material";
 import { useParams } from "react-router-dom";
 import SubmitActioner from "@onzag/itemize/client/components/item/SubmitActioner";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import Snackbar from "@onzag/itemize/client/fast-prototyping/components/snackbar";
 import Reader from "@onzag/itemize/client/components/property/Reader";
+import Link from "@onzag/itemize/client/components/navigation/Link";
 
 function EditOrNewRequest() {
   const params = useParams<{ id?: string }>();
   const isEdit = !!params.id;
+  const userData = useUserDataRetriever();
+  const isAdmin = userData.role === "ADMIN";
 
   return (
     <ModuleProvider module="permissioncard">
@@ -91,7 +95,7 @@ function EditOrNewRequest() {
                                   }}
                                 >
                                   <Reader id="approved">
-                                    {(approved:boolean) => (
+                                    {(approved: boolean) => (
                                       <Typography>
                                         <strong>
                                           <I18nRead i18nId="approved_status" />:
@@ -106,6 +110,27 @@ function EditOrNewRequest() {
                                   </Reader>
                                 </Box>
                               ) : null
+                            )}
+                            {isEdit && isAdmin && (
+                              <Reader id="created_by">
+                                {(createdBy: string) => (
+                                  <Link to={`/profile/${createdBy}`} style={{ textDecoration: "none", alignSelf: "flex-start" }}>
+                                    <I18nRead i18nId="check_role" >
+                                      {(i18nCheckRole: string) => (
+                                        <Chip
+                                          size="small"
+                                          icon={<ManageAccountsIcon />}
+                                          label={i18nCheckRole}
+                                          color="info"
+                                          variant="outlined"
+                                          clickable
+                                          sx={{ fontWeight: 500 }}
+                                        />
+                                      )}
+                                    </I18nRead>
+                                  </Link>
+                                )}
+                              </Reader>
                             )}
                           </Stack>
                         </Box>

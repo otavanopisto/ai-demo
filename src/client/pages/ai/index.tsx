@@ -332,7 +332,7 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
             ],
             limit: 20,
             offset: 0,
-            requestedProperties: ["content", "role"],
+            requestedProperties: ["content", "role", "input_tokens_count", "output_tokens_count"],
             traditional: true,
             parentedBy: {
                 item: "thread/thread",
@@ -351,7 +351,7 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
     });
 
     const newMessageItemProvider = useModThreadIdefMessageItemProvider({
-        properties: ["content", "role"],
+        properties: ["content", "role", "input_tokens_count", "output_tokens_count"],
         setters: [
             {
                 id: "role",
@@ -363,13 +363,21 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
                     language: null,
                     value: inputValue,
                 },
+            },
+            {
+                id: "input_tokens_count",
+                value: 0,
+            },
+            {
+                id: "output_tokens_count",
+                value: 0,
             }
         ],
     });
 
     const submitNewMessage = useCallback(async () => {
         const rs = await newMessageItemProvider.context.submit({
-            properties: ["content", "role"],
+            properties: ["content", "role", "input_tokens_count", "output_tokens_count"],
             action: "add",
             parentedBy: {
                 item: "thread/thread",
@@ -445,6 +453,8 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
                     ) : (
                         [...messagesSearchLoaded.searchRecords].reverse().map((message) => {
                             const isUser = message.searchResult?.DATA?.role === "user";
+                            const inputTokensCount = message.searchResult?.DATA?.input_tokens_count || 0;
+                            const outputTokensCount = message.searchResult?.DATA?.output_tokens_count || 0;
                             return (
                                 <Box
                                     key={message.id}
@@ -475,6 +485,20 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
                                                 <View id="content" />
                                             </ItemProvider>
                                         </ModuleProvider>
+                                        {!isUser && (inputTokensCount > 0 || outputTokensCount > 0) && (
+                                            <Box sx={{ display: "flex", gap: 1.5, mt: 1, pt: 1, borderTop: "1px solid", borderColor: "divider" }}>
+                                                {inputTokensCount > 0 && (
+                                                    <Typography variant="caption" color="text.secondary">
+                                                        <I18nRead i18nId="input_tokens_count" policyType="label" context="thread/message" />: {inputTokensCount}
+                                                    </Typography>
+                                                )}
+                                                {outputTokensCount > 0 && (
+                                                    <Typography variant="caption" color="text.secondary">
+                                                        <I18nRead i18nId="output_tokens_count" policyType="label" context="thread/message" />: {outputTokensCount}
+                                                    </Typography>
+                                                )}
+                                            </Box>
+                                        )}
                                     </Paper>
                                     {isUser && (
                                         <Avatar sx={{ bgcolor: "grey.400", width: 32, height: 32, mt: 0.5 }}>

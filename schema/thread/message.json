@@ -10,6 +10,16 @@
             "type": "text",
             "subtype": "plain",
             "searchable": false
+        },
+        {
+            "id": "input_tokens_count",
+            "type": "number",
+            "searchable": false
+        },
+        {
+            "id": "output_tokens_count",
+            "type": "number",
+            "searchable": false
         }
     ],
     "createRoleAccess": ["&ANYONE_LOGGED"],

@@ -53,7 +53,7 @@ async function queueAICompletitionOnThread(threadId: string, appData: IAppDataTy
         }
 
         const threadMessages = await appData.rawDB.performRawDBSelect<ModThreadIdefMessageSQLType>("thread/message", (b) => {
-            b.select("role", "content");
+            b.select("id", "role", "content");
             b.orderByBuilder.orderBy("created_at", "ASC", "LAST");
             b.whereBuilder.andWhereColumn("parent_id", threadId);
         });
