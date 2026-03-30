@@ -14,10 +14,16 @@ import {
     Avatar,
     Chip,
     IconButton,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
 } from "@mui/material";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import AddCommentIcon from "@mui/icons-material/AddComment";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import PersonIcon from "@mui/icons-material/Person";
@@ -99,6 +105,8 @@ interface IAIAgentRunPageProps {
 }
 
 function AIAgentEditPage(props: IAIAgentEditPageProps) {
+    const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+
     const itemProvider = useModAiIdefAgentItemProvider({
         forId: props.match.params.id,
         properties: ["name", "description", "provider", "system_prompt", "behaviour", "expertise"],
@@ -108,6 +116,15 @@ function AIAgentEditPage(props: IAIAgentEditPageProps) {
         const rs = await itemProvider.context.submit({
             properties: ["name", "description", "provider", "system_prompt", "behaviour", "expertise"],
             action: "edit",
+            cleanStateOnSuccess: true,
+        });
+        if (!rs.error) {
+            goBack();
+        }
+    }, [itemProvider]);
+
+    const deleteAgent = useCallback(async () => {
+        const rs = await itemProvider.context.delete({
             cleanStateOnSuccess: true,
         });
         if (!rs.error) {
@@ -141,10 +158,36 @@ function AIAgentEditPage(props: IAIAgentEditPageProps) {
                             <I18nReadError error={itemProvider.context.submitError} />
                         </Typography>
                     ) : null}
+                    {itemProvider.context.deleteError ? (
+                        <Typography color="error" variant="body2">
+                            <I18nReadError error={itemProvider.context.deleteError} />
+                        </Typography>
+                    ) : null}
                     <Button variant="contained" color="primary" size="large" onClick={saveAgent} sx={{ borderRadius: 2, px: 4, textTransform: "none", fontWeight: 600 }}>
                         <I18nRead i18nId="edit_agent" context="ai/agent" />
                     </Button>
+                    <Button variant="contained" color="error" size="large" startIcon={<DeleteIcon />} onClick={() => setDeleteDialogOpen(true)} sx={{ borderRadius: 2, px: 4, textTransform: "none", fontWeight: 600 }}>
+                        <I18nRead i18nId="delete_agent" context="ai/agent" />
+                    </Button>
                 </Box>
+                <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+                    <DialogTitle>
+                        <I18nRead i18nId="delete_agent" context="ai/agent" />
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            <I18nRead i18nId="delete_agent_confirm" context="ai/agent" />
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setDeleteDialogOpen(false)}>
+                            <I18nRead i18nId="cancel" context="ai/agent" />
+                        </Button>
+                        <Button onClick={deleteAgent} color="error" variant="contained">
+                            <I18nRead i18nId="delete_agent" context="ai/agent" />
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Paper>
         </Box>
     );
@@ -304,6 +347,8 @@ export function AIAgentStartRunPage(props: IAIAgentEditPageProps) {
 }
 
 export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
+    const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+
     const itemProvider = useModAiIdefAgentItemProvider({
         forId: props.match.params.id,
         properties: ["name", "description", "provider", "system_prompt", "behaviour", "expertise"],
@@ -317,6 +362,15 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
     const userData = useUserDataRetriever();
 
     const [inputValue, setInputValue] = React.useState("");
+
+    const deleteThread = useCallback(async () => {
+        const rs = await threadItemProvider.context.delete({
+            cleanStateOnSuccess: true,
+        });
+        if (!rs.error) {
+            goBack();
+        }
+    }, [threadItemProvider]);
 
     const messagesSearchProvider = useModThreadIdefMessageSearchItemProvider({
         setters: [
@@ -416,8 +470,29 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
                             }
                         })}
                     />
+                    <IconButton color="error" onClick={() => setDeleteDialogOpen(true)} size="small">
+                        <DeleteIcon fontSize="small" />
+                    </IconButton>
                 </Box>
             </Paper>
+            <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+                <DialogTitle>
+                    <I18nRead i18nId="delete_thread" context="ai/agent" />
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        <I18nRead i18nId="delete_thread_confirm" context="ai/agent" />
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setDeleteDialogOpen(false)}>
+                        <I18nRead i18nId="cancel" context="ai/agent" />
+                    </Button>
+                    <Button onClick={deleteThread} color="error" variant="contained">
+                        <I18nRead i18nId="delete_thread" context="ai/agent" />
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
             {/* Messages Area */}
             <Paper elevation={1} sx={{ flex: 1, borderRadius: 3, display: "flex", flexDirection: "column", overflow: "hidden", mb: 2 }}>

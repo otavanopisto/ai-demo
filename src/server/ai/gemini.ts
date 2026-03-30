@@ -73,6 +73,7 @@ export default async function processThreadWithGemini(
     threadMessage = await appData.cache.requestUpdate<ModThreadIdefMessageSQLType>("thread/message", threadMessage.id, threadMessage.version, {
         input_tokens_count: inputTokens,
         output_tokens_count: outputTokens,
+        model: model,
     }, {
         dictionary: "english",
         language: "en",

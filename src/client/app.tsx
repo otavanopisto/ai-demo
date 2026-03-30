@@ -8,6 +8,7 @@ import ImportantDevicesIcon from "@mui/icons-material/ImportantDevices";
 import HomeIcon from "@mui/icons-material/Home";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import BarChartIcon from "@mui/icons-material/BarChart";
 
 import { Frontpage } from "./pages/frontpage";
 import { Contact } from "./pages/contact";
@@ -36,6 +37,7 @@ import PageTimetrack from "@onzag/itemize/client/components/analytics/PageTimetr
 
 import Ai from "./pages/ai";
 import Requests from "./pages/requests";
+import Statistics from "./pages/statistics";
 
 /**
  * The default admin entries
@@ -82,6 +84,17 @@ export const MENU_ENTRIES: IMenuEntry[] = [
     idef: "request",
     i18nProps: {
       i18nId: "requests",
+      capitalize: true,
+    },
+    roles: ["ADMIN", "TEACHER"],
+  },
+  {
+    path: "/statistics",
+    icon: <BarChartIcon />,
+    module: "ai",
+    idef: "agent",
+    i18nProps: {
+      i18nId: "statistics",
       capitalize: true,
     },
     roles: ["ADMIN", "TEACHER"],
@@ -135,6 +148,8 @@ export default function App() {
       <Route path="/contact" component={Contact}/>
 
       <Route path="/ai" component={Ai} />
+
+      <Route path="/statistics" component={Statistics} />
 
       <Route path="/" component={Requests} />
 

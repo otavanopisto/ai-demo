@@ -12,6 +12,12 @@
             "searchable": false
         },
         {
+            "id": "model",
+            "type": "string",
+            "searchable": false,
+            "hidden": true
+        },
+        {
             "id": "input_tokens_count",
             "type": "number",
             "searchable": false

@@ -62,6 +62,19 @@ initializeServer(
     customRouterEndpoint: "/api",
     customRouter: (appData) => {
       const newRouter = appData.express.Router();
+      newRouter.get("/statistics", async (req, res) => {
+        try {
+          const data = await appData.rawDB.performRawDBSelect("thread/message", (b) => {
+            b.selectExpression(`"model"`);
+            b.selectExpression(`SUM("input_tokens_count") AS "inputTokens"`);
+            b.selectExpression(`SUM("output_tokens_count") AS "outputTokens"`);
+            b.groupByBuilder.addColumn("model");
+          });
+          res.json(data);
+        } catch (err) {
+          res.status(500).json({ error: "Failed to retrieve statistics" });
+        }
+      });
       return newRouter;
     },
     analytics: {
