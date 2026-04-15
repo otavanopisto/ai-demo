@@ -1,5 +1,5 @@
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import Route from "@onzag/itemize/client/components/navigation/Route";
 import { useModAiIdefAgentItemProvider, useModThreadIdefMessageItemProvider, useModThreadIdefMessageSearchItemProvider, useModThreadIdefThreadItemProvider, useModThreadIdefThreadSearchItemProvider } from "../../../schema";
 import {
@@ -362,6 +362,13 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
     const userData = useUserDataRetriever();
 
     const [inputValue, setInputValue] = React.useState("");
+    const chatContainerRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = useCallback(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    }, []);
 
     const deleteThread = useCallback(async () => {
         const rs = await threadItemProvider.context.delete({
@@ -402,10 +409,19 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
         currentPage: 0,
         pageSize: 20,
         startInSearchingState: true,
+        onSearchDataChange() {
+            setTimeout(scrollToBottom, 0);
+        },
     });
 
+    useEffect(() => {
+        if (!messagesSearchLoaded.isLoadingSearchResults && !messagesSearchLoaded.searching) {
+            setTimeout(scrollToBottom, 100);
+        }
+    }, [messagesSearchLoaded.isLoadingSearchResults, messagesSearchLoaded.searching]);
+
     const newMessageItemProvider = useModThreadIdefMessageItemProvider({
-        properties: ["content", "role", "input_tokens_count", "output_tokens_count"],
+        properties: ["content", "role", "model", "input_tokens_count", "output_tokens_count"],
         setters: [
             {
                 id: "role",
@@ -417,6 +433,10 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
                     language: null,
                     value: inputValue,
                 },
+            },
+            {
+                id: "model",
+                value: "unknown",
             },
             {
                 id: "input_tokens_count",
@@ -431,7 +451,7 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
 
     const submitNewMessage = useCallback(async () => {
         const rs = await newMessageItemProvider.context.submit({
-            properties: ["content", "role", "input_tokens_count", "output_tokens_count"],
+            properties: ["content", "role", "model", "input_tokens_count", "output_tokens_count"],
             action: "add",
             parentedBy: {
                 item: "thread/thread",
@@ -510,7 +530,7 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
                     </Box>
                 ) : null}
 
-                <Box sx={{ flex: 1, overflowY: "auto", px: 3, py: 2, display: "flex", flexDirection: "column", gap: 1.5 }}>
+                <Box ref={chatContainerRef} sx={{ flex: 1, overflowY: "auto", px: 3, py: 2, display: "flex", flexDirection: "column", gap: 1.5 }}>
                     {messagesSearchLoaded.isLoadingSearchResults || messagesSearchLoaded.searching ? (
                         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1.5, py: 6 }}>
                             <CircularProgress size={22} />
@@ -525,7 +545,8 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
                                 <I18nRead i18nId="no_messages" context="thread/message" />
                             </Typography>
                         </Box>
-                    ) : (
+                    ) : (null)}
+                    {
                         [...messagesSearchLoaded.searchRecords].reverse().map((message) => {
                             const isUser = message.searchResult?.DATA?.role === "user";
                             const inputTokensCount = message.searchResult?.DATA?.input_tokens_count || 0;
@@ -583,7 +604,7 @@ export function AIAgentRunThreadPage(props: IAIAgentRunPageProps) {
                                 </Box>
                             );
                         })
-                    )}
+                    }
                 </Box>
             </Paper>
 
