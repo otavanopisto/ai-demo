@@ -9,6 +9,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import BarChartIcon from "@mui/icons-material/BarChart";
+import PetsIcon from "@mui/icons-material/Pets";
 
 import { Frontpage } from "./pages/frontpage";
 import { Contact } from "./pages/contact";
@@ -38,6 +39,7 @@ import PageTimetrack from "@onzag/itemize/client/components/analytics/PageTimetr
 import Ai from "./pages/ai";
 import Requests from "./pages/requests";
 import Statistics from "./pages/statistics";
+import TestQuiz from "./pages/test";
 
 /**
  * The default admin entries
@@ -98,6 +100,14 @@ export const MENU_ENTRIES: IMenuEntry[] = [
       capitalize: true,
     },
     roles: ["ADMIN", "TEACHER"],
+  },
+  {
+    path: "/test",
+    icon: <PetsIcon />,
+    i18nProps: {
+      i18nId: "pet_quiz",
+      capitalize: true,
+    },
   }
 ];
 
@@ -150,6 +160,8 @@ export default function App() {
       <Route path="/ai" component={Ai} />
 
       <Route path="/statistics" component={Statistics} />
+
+      <Route path="/test" component={TestQuiz} />
 
       <Route path="/" component={Requests} />
 

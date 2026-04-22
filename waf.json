@@ -12,7 +12,8 @@
         "contact",
         "ai/...",
         "request/...",
-        "requests/..."
+        "requests/...",
+        "statistics"
     ],
     "allowedLocations": [
         {
@@ -26,6 +27,10 @@
         "/sitemap.xml",
         {
             "location": "/rest/...",
+            "rules": "client_max_body_size 1M;"
+        },
+        {
+            "location": "/api/...",
             "rules": "client_max_body_size 1M;"
         },
         "/"
