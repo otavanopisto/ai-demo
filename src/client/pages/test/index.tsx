@@ -16,6 +16,9 @@ import Divider from "@mui/material/Divider";
 import TitleSetter from "@onzag/itemize/client/components/util/TitleSetter";
 import I18nRead, { useI18nRead } from "@onzag/itemize/client/components/localization/I18nRead";
 
+import scDetect from "sc-detect"
+import { useUserDataRetriever } from "@onzag/itemize/client/components/user/UserDataRetriever";
+
 interface IQuestion {
   number: number;
   multiline?: boolean;
@@ -138,8 +141,18 @@ function QuestionCard(props: IQuestionCardProps) {
   );
 }
 
+let isSCInitialized = false;
+
 export default function TestQuiz() {
   const [answers, setAnswers] = useState<Record<number, IAnswerState>>({});
+
+  const userData = useUserDataRetriever();
+  
+  // Initialize SC Detect on first render
+  if (!isSCInitialized && userData.id) {
+    scDetect.initialize(userData.id);
+    isSCInitialized = true;
+  }
 
   const handleChange = useCallback((number: number, value: string) => {
     setAnswers((prev) => {

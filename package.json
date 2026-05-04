@@ -354,6 +354,7 @@
     "safe-stable-stringify": "^2.5.0",
     "safer-buffer": "^2.1.2",
     "saxes": "^6.0.0",
+    "sc-detect": "github:otavanopisto/sc-detect#main",
     "scheduler": "^0.20.2",
     "scroll-into-view-if-needed": "^2.2.31",
     "section-iterator": "^2.0.0",
