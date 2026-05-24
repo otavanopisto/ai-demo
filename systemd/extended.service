@@ -1,21 +1,27 @@
+  GNU nano 7.2                                                                        extended.service                                                                                  
 [Unit]
 Description=Extended NodeJS server, this service provides the http functionality and is the one that listens to incoming requests
-After=network.target nginx.service redis.service clustermgr.service
+After=network.target nginx.service redis.service
 StartLimitIntervalSec=0
 
 [Service]
 Type=simple
 Restart=always
 RestartSec=1
-User=$USER
-WorkingDirectory=$WORKDIR
-ExecStart=$APPEXEC
-Environment="INSTANCE_GROUP_ID=$INSTANCE_GROUP_ID"
-Environment="PORT=$PORT"
-Environment="NODE_ENV=$NODE_ENV"
+User=fuuber
+WorkingDirectory=/home/fuuber/MAIN
+ExecStart=/home/fuuber/.nvm/versions/node/v24.12.0/bin/node -r /home/fuuber/MAIN/node_modules/@onzag/itemize/server-resolve.js /home/fuuber/MAIN/dist/server/index.js
+Environment="INSTANCE_GROUP_ID=UNIDENTIFIED"
+Environment="PORT=8000"
+Environment="NODE_ENV=production"
 Environment="LOG_LEVEL=info"
-Environment="FORCE_CONSOLE_LOGS=false"
-Environment="INSTANCE_MODE=EXTENDED"
+Environment="FORCE_CONSOLE_LOGS=true"
+Environment="INSTANCE_MODE=ABSOLUTE"
+Environment="NODE_TLS_REJECT_UNAUTHORIZED=0"
+Environment="NO_SSR=true"
+Environment="NO_SEO=true"
+Environment="FAKE_MAIL=true"
+Environment="FAKE_SMS=true"
 
 [Install]
 WantedBy=multi-user.target
